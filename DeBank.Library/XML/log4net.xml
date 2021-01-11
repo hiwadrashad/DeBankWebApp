@@ -1,0 +1,9 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<configuration>
+  <log4net debug="true">
+  </log4net>
+  <logger name="Task">
+    <level value="DEBUG"/>
+    <appender-ref ref="task_appender"/>
+  </logger>
+</configuration>
