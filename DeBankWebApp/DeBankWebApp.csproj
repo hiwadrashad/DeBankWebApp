@@ -12,10 +12,20 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Images\isometric_image1.png" />
+    <None Remove="Images\isometric_image2.png" />
     <None Remove="Images\PersonIcon3.png" />
   </ItemGroup>
 
   <ItemGroup>
+    <Content Include="Images\isometric_image1.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Images\isometric_image2.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
     <Content Include="Images\PersonIcon3.png">
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
@@ -34,6 +44,19 @@
     <None Include="wwwroot\Images\BankIcon.png" />
     <None Include="wwwroot\Images\PersonIcon.jpg" />
     <None Include="wwwroot\Images\PersonIcon2.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\De-Bank\DeBank.FrontEnd\DeBank.FrontEnd.csproj" />
+    <ProjectReference Include="..\..\De-Bank\DeBank.Library\DeBank.Library.csproj" />
+    <ProjectReference Include="..\..\De-Bank\DeBank.Tests\DeBank.Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Update="wwwroot\Images\isometric_image1.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
   </ItemGroup>
 
 </Project>
