@@ -11,11 +11,13 @@ namespace DeBank.Library.Models
         [Key]
         public string Id { get; set; }
         public User Owner { get; set; }
+        [Display(Name = "User name")]
         public string Name { get; set; }
         public bool dummyaccount { get; set; }
         public decimal Money { get; internal set; }
         [Display(Name = "Previous transactions")]
         public List<Transaction> PreviousTransactions = new List<Transaction>();
+        public Information info {get;set;}
         public string IBAN { get; set; }
         [NotMapped]
         public List<Transaction> TransactionQueue = new List<Transaction>();

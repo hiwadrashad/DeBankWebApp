@@ -8,7 +8,10 @@ namespace DeBank.Library.Models
     {
         [Key]
         public string Id { get; set; }
+
+        [Display(Name = "User name")]
         public string Name { get; set; }
+        public Information info { get; set; }
         public bool dummyaccount { get; set; }
         public virtual List<BankAccount> Accounts { get; set; }
 
