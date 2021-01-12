@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.30717.126
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeBankWebApp", "DeBankWebApp\DeBankWebApp.csproj", "{1484CD80-62CC-4B83-AE12-0DF90A4E48B5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeBank.FrontEnd", "..\De-Bank\DeBank.FrontEnd\DeBank.FrontEnd.csproj", "{C8A62FB2-5AEA-4AD6-AE63-9D9C3CC680AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeBank.FrontEnd", "DeBank.FrontEnd\DeBank.FrontEnd.csproj", "{C8A62FB2-5AEA-4AD6-AE63-9D9C3CC680AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeBank.Library", "..\De-Bank\DeBank.Library\DeBank.Library.csproj", "{6FF236D9-EA8E-4523-B37D-BACE8573BB27}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeBank.Library", "DeBank.Library\DeBank.Library.csproj", "{6FF236D9-EA8E-4523-B37D-BACE8573BB27}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeBank.Tests", "..\De-Bank\DeBank.Tests\DeBank.Tests.csproj", "{70E6523F-ED97-436D-AA9A-B62EA7621492}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DeBank.Tests", "DeBank.Tests\DeBank.Tests.csproj", "{70E6523F-ED97-436D-AA9A-B62EA7621492}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
