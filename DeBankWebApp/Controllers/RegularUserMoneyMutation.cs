@@ -51,19 +51,20 @@ namespace DeBankWebApp.Controllers
         }
 
         // POST: RegularUserMoneyMutation/Edit/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Pay()
-        //{
-        //    try
-        //    {
-        //        return RedirectToAction(nameof(Index));
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Pay(DeBank.Library.Logic.Transaction transaction)
+        {
+            try
+            {
+                //DeBank.Library.Logic.BankLogic.SpendMoney();
+                return RedirectToAction("TransactionsAndSaldoOverview", "RegularUserOverview");
+            }
+            catch
+            {
+                return View();
+            }
+        }
 
     }
 }

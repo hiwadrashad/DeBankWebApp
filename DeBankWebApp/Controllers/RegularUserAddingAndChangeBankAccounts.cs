@@ -17,7 +17,15 @@ namespace DeBankWebApp.Controllers
         // GET: RegularUserAddingBankAccounts/Create
         public ActionResult GenerateBankAccount()
         {
-            return View();
+            BankAccount account = new BankAccount()
+            {
+             Id = Guid.NewGuid().ToString(),
+             dateofcreation = DateTime.Now,
+             dummyaccount = false,
+             IBAN = IBAN.IBAN.GenerateIBANNumber(),
+             Owner = StaticResources.CurrentUser.currentuser
+            };
+            return View(account);
         }
 
         // POST: RegularUserAddingBankAccounts/Create
@@ -27,6 +35,9 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
+                IbanNet.Builders.IbanBuilder builder = new IbanNet.Builders.IbanBuilder();
+                var IBANNumber = builder.Build();
+                account.IBAN = IBANNumber;
                 _dataService.AddBankaccounts(account);
                 var item = StaticResources.CurrentUser.currentuser;
                 item.Accounts.Add(account);
@@ -69,7 +80,7 @@ namespace DeBankWebApp.Controllers
         // GET: RegularUserAddingBankAccounts/Delete/5
         public ActionResult RemoveBankAccount()
         {
-            return View();
+            return View(StaticResources.CurrentUser.CurrentBankAccount);
         }
 
         // POST: RegularUserAddingBankAccounts/Delete/5
