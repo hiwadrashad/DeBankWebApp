@@ -22,7 +22,7 @@ namespace DeBank.Library.Logic
 
         public event EventHandler<string> TransactionLog;
 
-        //public BankAccount RecievingAccount { get; set; }
+        public BankAccount RecievingAccount { get; set; }
 
 
         public async Task<bool> Queue()
