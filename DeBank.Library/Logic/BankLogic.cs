@@ -12,6 +12,38 @@ namespace DeBank.Library.Logic
     public class BankLogic
     {
 
+        public static async Task<bool> AddMoney(BankAccount account, BankAccount opossiteaccount, decimal money, string reason = "")
+        {
+
+            Interfaces.IDataService _dataService = DataService.GetDataService();
+            if (money < 0)
+            {
+                return false;
+            }
+
+                Transaction transaction = new Transaction { Account = account, RecievingAccount = opossiteaccount, Amount = money, Reason = reason, dummytransaction = false, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
+          
+            transaction.TransactionLog += account.Log;
+            account.TransactionQueue.Add(transaction);
+            bool result = await transaction.Queue();
+            account.TransactionQueue.Remove(transaction);
+
+            account.PreviousTransactions.Add(transaction);
+
+            //<summary>
+            //added code start
+            //<summary>
+            _dataService.AddTransaction(transaction);
+            _dataService.UpdateBank(account);
+            var UserSuperAccount = _dataService.ReturnAllUsers().Where(a => a.Accounts.Where(a => a.Id == account.Id).Any()).FirstOrDefault();
+            _dataService.UpdateUser(UserSuperAccount);
+            //<summary>
+            //added code end
+            //<summary>
+
+            return result;
+        }
+
         public static async Task<bool> AddMoney(BankAccount account, decimal money, string reason = "")
         {
 
@@ -22,6 +54,7 @@ namespace DeBank.Library.Logic
             }
 
             Transaction transaction = new Transaction { Account = account, Amount = money, Reason = reason, dummytransaction = false, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
+
             transaction.TransactionLog += account.Log;
             account.TransactionQueue.Add(transaction);
             bool result = await transaction.Queue();
@@ -181,8 +214,8 @@ namespace DeBank.Library.Logic
                     for (int a = 0; a < amountoftimespayment; a++)
                     {
                         Thread.Sleep(25000);
-                        await AddMoney(DummyToAccount, price);
-                        await SpendMoney(DummyFromAccount, price);
+                        await AddMoney(DummyToAccount, DummyFromAccount, price);
+                        await SpendMoney(DummyFromAccount,DummyToAccount, price);
                     }
                 }
 #pragma warning disable CS0168 // Variable is declared but never used
@@ -563,6 +596,38 @@ namespace DeBank.Library.Logic
         //<summary>
         //added code end
         //<summary>
+        public static async Task<bool> SpendMoney(BankAccount account,BankAccount opossiteaccount,  decimal money, bool subscription = false, string reason = "")
+        {
+            Interfaces.IDataService _dataService = DataService.GetDataService();
+
+            if (money < 0)
+            {
+                return false;
+            }
+
+            Transaction transaction = new Transaction { Account = account, RecievingAccount = opossiteaccount,Amount = -money, Reason = reason, MayExecuteMore = subscription , Id = Guid.NewGuid().ToString(), dummytransaction = false, LastExecuted = DateTime.Now};
+            transaction.TransactionLog += account.Log;
+
+            account.TransactionQueue.Add(transaction);
+            bool result = await transaction.Queue();
+            account.TransactionQueue.Remove(transaction);
+
+            account.PreviousTransactions.Add(transaction);
+
+            //<summary>
+            //added code start
+            //<summary>
+            _dataService.AddTransaction(transaction);
+            _dataService.UpdateBank(account);
+            var UserSuperAccount = _dataService.ReturnAllUsers().Where(a => a.Accounts.Where(a => a.Id == account.Id).Any()).FirstOrDefault();
+            _dataService.UpdateUser(UserSuperAccount);
+            //<summary>
+            //added code end
+            //<summary>
+
+            return result;
+        }
+
         public static async Task<bool> SpendMoney(BankAccount account, decimal money, bool subscription = false, string reason = "")
         {
             Interfaces.IDataService _dataService = DataService.GetDataService();
@@ -572,7 +637,7 @@ namespace DeBank.Library.Logic
                 return false;
             }
 
-            Transaction transaction = new Transaction { Account = account, Amount = -money, Reason = reason, MayExecuteMore = subscription , Id = Guid.NewGuid().ToString(), dummytransaction = false, LastExecuted = DateTime.Now};
+            Transaction transaction = new Transaction { Account = account, Amount = -money, Reason = reason, MayExecuteMore = subscription, Id = Guid.NewGuid().ToString(), dummytransaction = false, LastExecuted = DateTime.Now };
             transaction.TransactionLog += account.Log;
 
             account.TransactionQueue.Add(transaction);
@@ -604,10 +669,10 @@ namespace DeBank.Library.Logic
                 return false;
             }
 
-            bool result = await SpendMoney(account1, money, false, "Geld overmaken naar " + account2.Owner.Name + (reason != "" ? ": " + reason : ""));
+            bool result = await SpendMoney(account1,account2, money, false, "Geld overmaken naar " + account2.Owner.Name + (reason != "" ? ": " + reason : ""));
             if (result)
             {
-                await AddMoney(account2, money, "Geld overmaken van " + account1.Owner.Name + (reason != "" ? ": " + reason : ""));
+                await AddMoney(account2,account1, money, "Geld overmaken van " + account1.Owner.Name + (reason != "" ? ": " + reason : ""));
             }
 
             return result;

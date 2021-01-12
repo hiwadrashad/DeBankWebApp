@@ -16,7 +16,7 @@ namespace DeBank.Library.Models
         public decimal Money { get; internal set; }
         [Display(Name = "Previous transactions")]
         public List<Transaction> PreviousTransactions = new List<Transaction>();
-
+        public string IBAN { get; set; }
         [NotMapped]
         public List<Transaction> TransactionQueue = new List<Transaction>();
         public event EventHandler<string> TransactionLog;
