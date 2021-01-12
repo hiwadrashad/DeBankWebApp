@@ -17,13 +17,14 @@ namespace DeBankWebApp.Controllers
         // GET: RegularUserAddingBankAccounts/Create
         public ActionResult GenerateBankAccount()
         {
+            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
             BankAccount account = new BankAccount()
             {
-             Id = Guid.NewGuid().ToString(),
-             dateofcreation = DateTime.Now,
-             dummyaccount = false,
-             IBAN = IBAN.IBAN.GenerateIBANNumber(),
-             Owner = StaticResources.CurrentUser.currentuser
+                Id = Guid.NewGuid().ToString(),
+                dateofcreation = DateTime.Now,
+                dummyaccount = false,
+                IBAN = IBAN.IBAN.GenerateIBANNumber(),
+                Owner = StaticResources.CurrentUser.currentuser,
             };
             return View(account);
         }
@@ -35,6 +36,7 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
+                MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
                 IbanNet.Builders.IbanBuilder builder = new IbanNet.Builders.IbanBuilder();
                 var IBANNumber = builder.Build();
                 account.IBAN = IBANNumber;
@@ -50,9 +52,16 @@ namespace DeBankWebApp.Controllers
             }
         }
 
+        public ActionResult AccountDetails()
+        {
+            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
+            return View(StaticResources.CurrentUser.CurrentBankAccount);
+        }
+
         // GET: RegularUserAddingBankAccounts/Edit/5
         public ActionResult ChangeBankAccountData()
         {
+            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
             return View(StaticResources.CurrentUser.CurrentBankAccount);
         }
 
@@ -63,6 +72,7 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
+                MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
                 _dataService.UpdateBank(account);
                 var item = StaticResources.CurrentUser.currentuser;
                 var item2 = item.Accounts.Where(a => a.Id == account.Id).FirstOrDefault();
@@ -102,7 +112,7 @@ namespace DeBankWebApp.Controllers
                     item.Accounts.Remove(account);
                     _dataService.UpdateUser(item);
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("SubAccountsOverview", "RegularUserOverview");
             }
             catch
             {

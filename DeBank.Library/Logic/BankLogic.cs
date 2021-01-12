@@ -21,7 +21,7 @@ namespace DeBank.Library.Logic
                 return false;
             }
 
-                Transaction transaction = new Transaction { Account = account, RecievingAccount = opossiteaccount, Amount = money, Reason = reason, dummytransaction = false, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
+                Transaction transaction = new Transaction { Account = account, InteractedAccount = opossiteaccount, Amount = money, Reason = reason, dummytransaction = false, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
           
             transaction.TransactionLog += account.Log;
             account.TransactionQueue.Add(transaction);
@@ -150,7 +150,7 @@ namespace DeBank.Library.Logic
                             Name = name,
                             Owner = owner,
                             dummyaccount = false,
-                            dateofcreation = DateTime.Now
+                            dateofcreation = DateTime.Now,
                         };
                         _dataService.AddBankaccounts(user);
                     });
@@ -605,7 +605,7 @@ namespace DeBank.Library.Logic
                 return false;
             }
 
-            Transaction transaction = new Transaction { Account = account, RecievingAccount = opossiteaccount,Amount = -money, Reason = reason, MayExecuteMore = subscription , Id = Guid.NewGuid().ToString(), dummytransaction = false, LastExecuted = DateTime.Now};
+            Transaction transaction = new Transaction { Account = account, InteractedAccount = opossiteaccount,Amount = -money, Reason = reason, MayExecuteMore = subscription , Id = Guid.NewGuid().ToString(), dummytransaction = false, LastExecuted = DateTime.Now};
             transaction.TransactionLog += account.Log;
 
             account.TransactionQueue.Add(transaction);

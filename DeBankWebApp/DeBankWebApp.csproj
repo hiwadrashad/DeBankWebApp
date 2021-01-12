@@ -49,9 +49,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\De-Bank\DeBank.FrontEnd\DeBank.FrontEnd.csproj" />
-    <ProjectReference Include="..\..\De-Bank\DeBank.Library\DeBank.Library.csproj" />
-    <ProjectReference Include="..\..\De-Bank\DeBank.Tests\DeBank.Tests.csproj" />
+    <ProjectReference Include="..\DeBank.FrontEnd\DeBank.FrontEnd.csproj" />
+    <ProjectReference Include="..\DeBank.Library\DeBank.Library.csproj" />
+    <ProjectReference Include="..\DeBank.Tests\DeBank.Tests.csproj" />
   </ItemGroup>
 
   <ItemGroup>

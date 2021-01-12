@@ -22,7 +22,7 @@ namespace DeBank.Library.Models
         [Display(Name = "Street number")]
         public string Streetnumber { get; set; }
         public string City { get; set; }
-
+       
         [Display(Name = "Telephone number")]
         public string Telephonenumber { get; set; }
 

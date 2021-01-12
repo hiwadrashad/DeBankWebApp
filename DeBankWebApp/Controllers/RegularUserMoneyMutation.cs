@@ -18,6 +18,7 @@ namespace DeBankWebApp.Controllers
         // GET: RegularUserMoneyMutation
         public ActionResult TransferMoney()
         {
+            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
             DeBank.Library.Logic.Transaction transaction = new DeBank.Library.Logic.Transaction();
             transaction = new DeBank.Library.Logic.Transaction()
             {
@@ -40,6 +41,7 @@ namespace DeBankWebApp.Controllers
         // GET: RegularUserMoneyMutation/Edit/5
         public ActionResult Pay()
         {
+            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
             DeBank.Library.Logic.Transaction transaction = new DeBank.Library.Logic.Transaction();
             transaction = new DeBank.Library.Logic.Transaction()
             {

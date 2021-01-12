@@ -20,32 +20,35 @@ namespace DeBankWebApp.Controllers
             // mockingdata
             //<summary>
 
-            User mockuser = new User()
-            {
-                Id = Guid.NewGuid().ToString(),
-                dateofcreation = DateTime.Now,
-                Name = "test",
-                dummyaccount = true,
-                Accounts = new List<BankAccount>()
-                {
-                new BankAccount()
-                {
-                 Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
-                 Name = "test",
-                },
-                 new BankAccount()
-                {
-                 Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
-                 Name = "test",
-                }
-                }
-            };
+            //User mockuser = new User()
+            //{
+            //    Id = Guid.NewGuid().ToString(),
+            //    dateofcreation = DateTime.Now,
+            //    Name = "test",
+            //    dummyaccount = true,
+            //    Accounts = new List<BankAccount>()
+            //    {
+            //    new BankAccount()
+            //    {
+            //     Id = Guid.NewGuid().ToString(),
+            //     dateofcreation = DateTime.Now,
+            //     dummyaccount = true,
+            //     Name = "test",
+            //    },
+            //     new BankAccount()
+            //    {
+            //     Id = Guid.NewGuid().ToString(),
+            //     dateofcreation = DateTime.Now,
+            //     dummyaccount = true,
+            //     Name = "test",
+            //    }
+            //    }
+            //};
 
-            StaticResources.CurrentUser.currentuser = mockuser;
+            //StaticResources.CurrentUser.currentuser = mockuser;
+
+            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
+
             return View(StaticResources.CurrentUser.currentuser.Accounts);
         }
 
@@ -55,33 +58,33 @@ namespace DeBankWebApp.Controllers
             // mockingdata
             //<summary>
 
-            User mockuser = new User()
-            {
-                Id = Guid.NewGuid().ToString(),
-                dateofcreation = DateTime.Now,
-                Name = "test",
-                dummyaccount = true,
-                Accounts = new List<BankAccount>()
-                {
-                new BankAccount()
-                {
-                 Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
-                 Name = "test",
-                },
-                 new BankAccount()
-                {
-                 Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
-                 Name = "test",
-                }
-                }
-            };
+            //User mockuser = new User()
+            //{
+            //    Id = Guid.NewGuid().ToString(),
+            //    dateofcreation = DateTime.Now,
+            //    Name = "test",
+            //    dummyaccount = true,
+            //    Accounts = new List<BankAccount>()
+            //    {
+            //    new BankAccount()
+            //    {
+            //     Id = Guid.NewGuid().ToString(),
+            //     dateofcreation = DateTime.Now,
+            //     dummyaccount = true,
+            //     Name = "test",
+            //    },
+            //     new BankAccount()
+            //    {
+            //     Id = Guid.NewGuid().ToString(),
+            //     dateofcreation = DateTime.Now,
+            //     dummyaccount = true,
+            //     Name = "test",
+            //    }
+            //    }
+            //};
 
-            StaticResources.CurrentUser.currentuser = mockuser;
-            StaticResources.CurrentUser.CurrentBankAccount = mockuser.Accounts.FirstOrDefault();
+            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
+        
             return View(StaticResources.CurrentUser.CurrentBankAccount.PreviousTransactions);
         }
     }
