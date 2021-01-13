@@ -62,6 +62,12 @@ namespace DeBankWebApp.Controllers
             return View(transaction);
         }
 
+        public ActionResult PaypalTransfer()
+        {
+            TempData["IBANcarryover"] = TempData["IBAN"];
+            return View();
+        }
+
         // POST: RegularUserMoneyMutation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -70,11 +76,16 @@ namespace DeBankWebApp.Controllers
             try
             {
                 if (IBAN.IBAN.ValidateIBAN(transaction.InteractedAccount.IBAN))
-                { 
-                
+                {
+                    TempData["IBAN"] = transaction.InteractedAccount.IBAN;
+                    return RedirectToAction("PaypalTransfer", "RegularUserMoneyMutation");
+                }
+                else
+                {
+                    GeneralMethods.ShowUserNotFoundMessage();
+                    return View();
                 }
                 //DeBank.Library.Logic.BankLogic.SpendMoney();
-                return RedirectToAction("TransactionsAndSaldoOverview", "RegularUserOverview");
             }
             catch
             {
