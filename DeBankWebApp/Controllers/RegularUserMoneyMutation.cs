@@ -1,4 +1,5 @@
 ﻿using DeBank.Library.DAL;
+using DeBank.Library.GeneralMethods;
 using DeBank.Library.Interfaces;
 using DeBank.Library.Models;
 using DeBankWebApp.ViewModels;
@@ -33,8 +34,17 @@ namespace DeBankWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> TransferMoney(DeBank.Library.Logic.Transaction transaction)
         {
-            await DeBank.Library.Logic.BankLogic.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
-            return View();
+            if (_dataService.ReturnAllBankAccounts().Where(a => a.IBAN == transaction.InteractedAccount.IBAN).Any())
+            {
+                transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.IBAN == transaction.InteractedAccount.IBAN).FirstOrDefault();
+                await DeBank.Library.Logic.BankLogic.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
+                return View();
+            }
+            else
+            {
+                GeneralMethods.ShowUserNotFoundMessage();
+                return View();
+            }
         }
 
 
@@ -49,7 +59,7 @@ namespace DeBankWebApp.Controllers
                 Account = StaticResources.CurrentUser.CurrentBankAccount,
                 dummytransaction = false,
             };
-            return View();
+            return View(transaction);
         }
 
         // POST: RegularUserMoneyMutation/Edit/5
@@ -59,6 +69,10 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
+                if (IBAN.IBAN.ValidateIBAN(transaction.InteractedAccount.IBAN))
+                { 
+                
+                }
                 //DeBank.Library.Logic.BankLogic.SpendMoney();
                 return RedirectToAction("TransactionsAndSaldoOverview", "RegularUserOverview");
             }

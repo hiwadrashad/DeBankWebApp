@@ -1,4 +1,5 @@
 ﻿using DeBank.Library.DAL;
+using DeBank.Library.GeneralMethods;
 using DeBank.Library.Interfaces;
 using DeBank.Library.Models;
 using Microsoft.AspNetCore.Http;
@@ -84,8 +85,8 @@ namespace DeBankWebApp.Controllers
             //};
 
             MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
-        
-            return View(StaticResources.CurrentUser.CurrentBankAccount.PreviousTransactions);
+            IEnumerable<BankAccount> listedcurrentitem = GeneralMethods.CreateEnumerable<BankAccount>(StaticResources.CurrentUser.CurrentBankAccount);
+            return View(listedcurrentitem);
         }
     }
 }

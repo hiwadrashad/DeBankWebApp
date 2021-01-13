@@ -29,6 +29,19 @@ namespace DeBankWebApp.MockingData
                  dateofcreation = DateTime.Now,
                  dummyaccount = true,
                  Name = "test",
+                 info = new Information()
+                 {
+                  Addition = "test",
+                  City = "test",
+                  Emailadress = "test@hotmail.com",
+                  Firstname = "test",
+                  Lastname = "test",
+                  Postalcode = "test",
+                  Streetname = "test",
+                  Streetnumber = "test",
+                  Telephonenumber = "test"
+                 },
+                 IBAN = IBAN.IBAN.GenerateIBANNumber()
                 },
                  new BankAccount()
                 {
@@ -36,9 +49,24 @@ namespace DeBankWebApp.MockingData
                  dateofcreation = DateTime.Now,
                  dummyaccount = true,
                  Name = "test",
+                 info = new Information()
+                 {
+                  Addition = "test",
+                  City = "test",
+                  Emailadress = "test@hotmail.com",
+                  Firstname = "test",
+                  Lastname = "test",
+                  Postalcode = "test",
+                  Streetname = "test",
+                  Streetnumber = "test",
+                  Telephonenumber = "test"
+                 },
+                 IBAN = IBAN.IBAN.GenerateIBANNumber()
                 }
                 }
                     };
+                    mockuser.Accounts.FirstOrDefault().Owner = mockuser;
+                    mockuser.Accounts.Skip(1).FirstOrDefault().Owner = mockuser;
                     StaticResources.CurrentUser.currentuser = mockuser;
                     StaticResources.CurrentUser.CurrentBankAccount = mockuser.Accounts.FirstOrDefault();
                 }
