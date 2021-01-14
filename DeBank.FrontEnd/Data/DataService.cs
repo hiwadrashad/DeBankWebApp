@@ -27,7 +27,6 @@ namespace DeBank.FrontEnd.Data
             }
             return _dataService;
         }
-
         public bool AddUser(User user)
         {
             _dbContext.Users.Add(user);
@@ -67,6 +66,21 @@ namespace DeBank.FrontEnd.Data
             }
 
             return transactions;
+        }
+
+        public User ReturnUser(string id)
+        {
+            return _dbContext.Users.Where(a => a.Id == id).FirstOrDefault();
+        }
+
+        public BankAccount ReturnBankAccount(string id)
+        {
+            return _dbContext.BankAccounts.Where(a => a.Id == id).FirstOrDefault();
+        }
+
+        public Transaction ReturnTransaction(string id)
+        {
+            return _dbContext.Transactions.Where(a => a.Id == id).FirstOrDefault();
         }
 
         public bool UpdateUser(User user)

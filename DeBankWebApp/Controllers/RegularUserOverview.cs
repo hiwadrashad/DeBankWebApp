@@ -14,7 +14,7 @@ namespace DeBankWebApp.Controllers
 {
     public class RegularUserOverview : Controller
     {
-        IDataService _dataService = DataService.GetDataService();
+        IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
         // GET: RegularUserOverview
         public ActionResult SubAccountsOverview()
         {
@@ -49,12 +49,10 @@ namespace DeBankWebApp.Controllers
 
             //StaticResources.CurrentUser.currentuser = mockuser;
 
-            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
-
             return View(StaticResources.CurrentUser.currentuser.Accounts);
         }
 
-        public ActionResult TransactionsAndSaldoOverview()
+        public ActionResult TransactionsAndSaldoOverview(string id)
         { 
             //<summary>
             // mockingdata
@@ -85,9 +83,7 @@ namespace DeBankWebApp.Controllers
             //    }
             //};
 
-            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
-            IEnumerable<BankAccount> listedcurrentitem = GeneralMethods.CreateEnumerable<BankAccount>(StaticResources.CurrentUser.CurrentBankAccount);
-            return View(listedcurrentitem);
+            return View(_dataService.ReturnBankAccount(id).PreviousTransactions);
         }
     }
 }

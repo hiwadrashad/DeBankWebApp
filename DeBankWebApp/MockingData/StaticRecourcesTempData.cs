@@ -8,7 +8,7 @@ namespace DeBankWebApp.MockingData
 {
     public static class StaticRecourcesTempData
     {
-        public static bool usemockdata = true;
+        public static bool usemockdata = false;
         public static void AssignsValueStaticRecources(bool usemockdata)
         {
             if (usemockdata == true)

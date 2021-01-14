@@ -43,9 +43,12 @@
                 @Html.DisplayFor(modelItem => item.dateofcreation)
             </td>
             <td>
-                @Html.ActionLink("Edit data", "ChangeBankAccountData", "RegularUserAddingAndChangeBankAccounts", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details account", "AccountDetails", "RegularUserAddingAndChangeBankAccounts", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete account", "RemoveBankAccount", "RegularUserAddingAndChangeBankAccounts", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Edit data", "ChangeBankAccountData", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id }) |
+                @Html.ActionLink("Details account", "AccountDetails", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id }) |
+                @Html.ActionLink("Delete account", "RemoveBankAccount", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id })
+                @Html.ActionLink("See previous transactions", "TransactionsAndSaldoOverview", "RegularUserOverview", new { id = item.Id })
+                @Html.ActionLink("Transfer money", "TransferMoney", "RegularUserMoneyMutation", new { id = item.Id })
+                @Html.ActionLink("Pay", "Pay", "RegularUserMoneyMutation", new { id = item.Id })
             </td>
         </tr>
 }

@@ -13,16 +13,17 @@ namespace DeBankWebApp.Controllers
 {
     public class RegularUserMoneyMutation : Controller
     {
-        IDataService _dataService = DataService.GetDataService();
+        IDataService _dataService = MockingData.GetMockDataService();
 
         // GET: RegularUserMoneyMutation
-        public ActionResult TransferMoney()
+        public ActionResult TransferMoney(string id)
         {
-            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
-            Transaction transaction = new Transaction()
+            DeBank.Library.Logic.Transaction transaction = new DeBank.Library.Logic.Transaction();
+            transaction = new DeBank.Library.Logic.Transaction()
             {
-             Id = Guid.NewGuid().ToString(),
-             Account = StaticResources.CurrentUser.CurrentBankAccount
+                Id = Guid.NewGuid().ToString(),
+                dummytransaction = false,
+                Account = _dataService.ReturnBankAccount(id)
             };
             return View(transaction);
         }
@@ -50,13 +51,14 @@ namespace DeBankWebApp.Controllers
 
 
         // GET: RegularUserMoneyMutation/Edit/5
-        public ActionResult Pay()
+        public ActionResult Pay(string id)
         {
-            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
-            Transaction transaction = new Transaction()
+            DeBank.Library.Logic.Transaction transaction = new DeBank.Library.Logic.Transaction();
+            transaction = new DeBank.Library.Logic.Transaction()
             {
                 Id = Guid.NewGuid().ToString(),
-                Account = StaticResources.CurrentUser.CurrentBankAccount,
+                Account = _dataService.ReturnBankAccount(id),
+                dummytransaction = false,
             };
             return View(transaction);
         }
