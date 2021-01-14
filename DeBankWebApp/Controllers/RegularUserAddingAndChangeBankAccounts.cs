@@ -13,11 +13,10 @@ namespace DeBankWebApp.Controllers
 {
     public class RegularUserAddingAndChangeBankAccounts : Controller
     {
-        IDataService _dataService = DataService.GetDataService();
+        IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
         // GET: RegularUserAddingBankAccounts/Create
         public ActionResult GenerateBankAccount()
         {
-            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
             BankAccount account = new BankAccount()
             {
                 Id = Guid.NewGuid().ToString(),
@@ -36,7 +35,6 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
-                MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
                 IbanNet.Builders.IbanBuilder builder = new IbanNet.Builders.IbanBuilder();
                 var IBANNumber = builder.Build();
                 account.IBAN = IBANNumber;
@@ -52,17 +50,15 @@ namespace DeBankWebApp.Controllers
             }
         }
 
-        public ActionResult AccountDetails()
+        public ActionResult AccountDetails(string id)
         {
-            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
-            return View(StaticResources.CurrentUser.CurrentBankAccount);
+            return View(_dataService.ReturnBankAccount(id));
         }
 
         // GET: RegularUserAddingBankAccounts/Edit/5
-        public ActionResult ChangeBankAccountData()
+        public ActionResult ChangeBankAccountData(string id)
         {
-            MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
-            return View(StaticResources.CurrentUser.CurrentBankAccount);
+            return View(_dataService.ReturnBankAccount(id));
         }
 
         // POST: RegularUserAddingBankAccounts/Edit/5
@@ -72,7 +68,6 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
-                MockingData.StaticRecourcesTempData.AssignsValueStaticRecources(MockingData.StaticRecourcesTempData.usemockdata);
                 _dataService.UpdateBank(account);
                 var item = StaticResources.CurrentUser.currentuser;
                 var item2 = item.Accounts.Where(a => a.Id == account.Id).FirstOrDefault();
@@ -88,9 +83,9 @@ namespace DeBankWebApp.Controllers
         }
 
         // GET: RegularUserAddingBankAccounts/Delete/5
-        public ActionResult RemoveBankAccount()
+        public ActionResult RemoveBankAccount(string id)
         {
-            return View(StaticResources.CurrentUser.CurrentBankAccount);
+            return View(_dataService.ReturnBankAccount(id));
         }
 
         // POST: RegularUserAddingBankAccounts/Delete/5

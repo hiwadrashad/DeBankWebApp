@@ -12,6 +12,10 @@ namespace DeBank.Library.Models
         [Display(Name = "User name")]
         public string Name { get; set; }
         public Information info { get; set; }
+        public string password { get; set; }
+
+        [EmailAddress]
+        public string email { get; set; }
         public bool dummyaccount { get; set; }
         public virtual List<BankAccount> Accounts { get; set; }
 

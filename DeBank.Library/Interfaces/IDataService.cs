@@ -22,5 +22,10 @@ namespace DeBank.Library.Interfaces
         Filter<Transaction> ReturnLatestTransactions(int seconds, BankAccount account = null);
         Filter<Transaction> ReturnLatestTransactions(NumberEnums number, int seconds = -1, BankAccount account = null);
         Filter<BankAccount> ReturnAllBankAccountsUnder(decimal thresholdMoney);
+        User ReturnUser(string id);
+        BankAccount ReturnBankAccount(string id);
+        Logic.Transaction ReturnTransaction(string id);
+
+
     }
 }
