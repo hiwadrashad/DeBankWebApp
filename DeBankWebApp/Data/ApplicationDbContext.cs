@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using DeBank.Library.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,9 +9,21 @@ namespace DeBankWebApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options)
-            : base(options)
+        private ApplicationDbContext()
         {
         }
+
+        private static ApplicationDbContext _dbContext;
+
+        public static ApplicationDbContext GetDbContext()
+        {
+            if (_dbContext != null)
+            {
+                _dbContext = new ApplicationDbContext();
+            }
+            return _dbContext;
+        }
+
+        public DbSet<User> Users { get; set; }
     }
 }

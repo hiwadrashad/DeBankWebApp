@@ -1,127 +1,91 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DeBank.Library.Models;
 using DeBank.Library.Logic;
 using System;
 using DeBank.Library.DAL;
+using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using DeBank.Tests.Data;
 
 namespace DeBank.Tests
 {
     [TestClass]
     public class MoneyTests
     {
+        private BankLogic _logic = TestsBankLogic.GetBankLogic();
+
         [TestMethod]
-        public void AddMoneyTest()
+        public async Task AddMoneyTest()
         {
-            List<BankAccount> accounts = new List<BankAccount>();
-            accounts.Add(new BankAccount { Name = "Persoonlijke Kaart" });
+            User user = await _logic.AddUser("Vanja van Essen");
+            BankAccount account = await _logic.AddBankAccount(user, "Persoonlijke Kaart", 0);
 
-            User user1 = new User { Name = "Vanja van Essen", Accounts = accounts };
+            await _logic.AddMoney(account, 10, "Initial money");
 
-            BankLogic.AddMoney(user1.Accounts[0], 10, "Initial money").Wait();
-
-            Assert.AreEqual(10, user1.Accounts[0].Money, "Account didn't get the money correctly");
+            NUnit.Framework.Assert.AreEqual(10, account.Money, "Account didn't get the money correctly");
         }
 
         [TestMethod]
-        public void SpendMoneyOnceTest()
+        public async Task SpendMoneyOnceTest()
         {
-            List<BankAccount> accounts = new List<BankAccount>();
-            accounts.Add(new BankAccount { Name = "Persoonlijke Kaart" });
+            User user = await _logic.AddUser("Vanja van Essen");
+            BankAccount account = await _logic.AddBankAccount(user, "Persoonlijke Kaart", 500);
 
-            User user1 = new User { Name = "Vanja van Essen", Accounts = accounts };
+            await _logic.SpendMoney(account, 10);
 
-            BankLogic.AddMoney(user1.Accounts[0], 500, "Initial money").Wait();
-
-            BankLogic.SpendMoney(user1.Accounts[0], 10).Wait();
-
-            Assert.AreEqual(490, user1.Accounts[0].Money, "Account didn't remove the money correctly");
+            Assert.AreEqual(490, account.Money, "Account didn't remove the money correctly");
         }
 
         [TestMethod]
-        public void SpendMoneyTwiceTest()
+        public async Task SpendMoneyTwiceTest()
         {
-            List<BankAccount> accounts1 = new List<BankAccount>();
-            accounts1.Add(new BankAccount { Name = "Persoonlijke Kaart" });
+            User user = await _logic.AddUser("Vanja van Essen");
+            BankAccount account = await _logic.AddBankAccount(user, "Persoonlijke Kaart", 250);
 
-            User user1 = new User { Name = "Vanja van Essen", Accounts = accounts1 };
+            await _logic.SpendMoney(account, 10);
 
-            BankLogic.AddMoney(user1.Accounts[0], 250, "Initial money").Wait();
+            await _logic.SpendMoney(account, 10, true);
 
-            BankLogic.SpendMoney(user1.Accounts[0], 10).Wait();
-
-            BankLogic.SpendMoney(user1.Accounts[0], 10, true).Wait();
-
-            foreach(Transaction transaction in user1.Accounts[0].PreviousTransactions)
+            foreach(Transaction transaction in account.PreviousTransactions)
             {
                 if(transaction.MayExecuteMore)
                 {
-                    transaction.Queue().Wait();
+                    await transaction.Queue();
                     break;
                 }
             }
 
-            Assert.AreEqual(220, user1.Accounts[0].Money, "Account didn't remove the money correctly");
+            Assert.AreEqual(220, account.Money, "Account didn't remove the money correctly");
         }
 
         [TestMethod]
-        [TestCategory("CategorizationStructure")]
-        [DynamicData(nameof(Library.CSVToIEnumerable.NamesConverter.TestNamesConverter), typeof(Library.CSVToIEnumerable.NamesConverter))]
-        public void TestDALFunctions(string names)
+        public async Task TestAddUser()
         {
-            Library.Interfaces.IDataService _dataService = DataService.GetDataService();
+            User user = await _logic.AddUser("test");
 
-            BankAccount user = new BankAccount()
-            {
-                Id = Guid.NewGuid().ToString(),
-                dateofcreation = DateTime.Now,
-                dummyaccount = true,
-                Name = names,
-            };
-
-            NUnit.Framework.Assert.DoesNotThrow(() => _dataService.AddBankaccounts(user));
-            
+            Assert.AreEqual("test", user.Name, "Didn't add user correctly");
         }
 
         [TestMethod]
-        [TestCategory("HRTesting")]
-        public void TestAutomatedReccuringPayments()
+        public async Task TestAddBankAccount()
         {
-            NUnit.Framework.Assert.DoesNotThrow(() => BankLogic.AutomatedRecurringPayments(100, 4));
-        }
+            User user = await _logic.AddUser("test");
+            BankAccount account = await _logic.AddBankAccount(user, "test", 1000000);
 
-        [TestMethod]
-        [TestCategory("HRTesting")]
-        public void TestAddUser()
-        {
-            NUnit.Framework.Assert.DoesNotThrow(() => BankLogic.AddUser("test", false));
-        }
-
-        [TestMethod]
-        [TestCategory("HRTesting")]
-        public void TestAddBankAccount()
-        {
-            User user = new User()
-            {
-             Id = Guid.NewGuid().ToString(),
-             dateofcreation = DateTime.Now,
-             dummyaccount = true,
-             Name = "Test"
-            };
-            NUnit.Framework.Assert.DoesNotThrow(() => BankLogic.AddBankAccount(user, "test", 1000000, true));
+            Assert.AreEqual(user, account.Owner, "Didn't add bank account correctly");
+            Assert.AreEqual(1000000, account.Money, "Didn't add bank account correctly");
         }
 
 
 
         [TestMethod]
         [TestCategory("HRTesting")]
-        public void TestReturnTransactionsWithinTimeFrame()
+        public async Task TestReturnTransactionsWithinTimeFrame()
         {
             BankAccount account = new BankAccount()
             {
                 Id = Guid.NewGuid().ToString(),
-                dateofcreation = DateTime.Now,
-                dummyaccount = true,
+                DateOfCreation = DateTime.Now,
                 PreviousTransactions = new List<Transaction>()
                 {
                   new Transaction()
@@ -129,41 +93,40 @@ namespace DeBank.Tests
                    Id = Guid.NewGuid().ToString(),
                    Amount = 100,
                    LastExecuted = DateTime.Now,
-                   dummytransaction = true,
                   }
                 }
             };
-            NUnit.Framework.Assert.DoesNotThrow(async() => await BankLogic.ReturnTransactionsWithinTimeFrame(account, 100, Library.Enums.PositiveNegativeOrAllTransactions.none));
+            NUnit.Framework.Assert.DoesNotThrowAsync(async() => await _logic.ReturnTransactionsWithinTimeFrame(account, 100, NumberEnums.Positive));
 
         }
 
         [TestMethod]
         [TestCategory("HRTesting")]
-        public void TestReturnAllUsersBeneathOraboveGivenValue()
+        public async Task TestReturnAllUsersBeneathOraboveGivenValue()
         {
-            NUnit.Framework.Assert.DoesNotThrow(async() => await BankLogic.ReturnAllusersBeneathOrAboveGivenValue(100, true));
+            NUnit.Framework.Assert.DoesNotThrowAsync(async() => await _logic.ReturnAllusersBeneathOrAboveGivenValue(100, true));
         }
 
         [TestMethod]
         [TestCategory("HRTesting")]
-        public void TestReturnAllUserSortedOnName()
+        public async Task TestReturnAllUserSortedOnName()
         {
-            NUnit.Framework.Assert.DoesNotThrow(async() => await BankLogic.ReturnAllUsersSortedOnName());
+            NUnit.Framework.Assert.DoesNotThrowAsync(async() => await _logic.ReturnAllUsersSortedOnName());
         }
 
         [TestMethod]
         [TestCategory("HRTesting")]
-        public void TestReturnAllUserSortedOnSaldo()
+        public async Task TestReturnAllUserSortedOnSaldo()
         {
-            NUnit.Framework.Assert.DoesNotThrow(async () => await BankLogic.ReturnAllUsersSortedOnSaldo());
+            NUnit.Framework.Assert.DoesNotThrowAsync(async () => await _logic.ReturnAllUsersSortedOnSaldo());
         }
 
 
         [TestMethod]
         [TestCategory("HRTesting")]
-        public void TestReturnAllUserSortedOndateOfCreation()
+        public async Task TestReturnAllUserSortedOndateOfCreation()
         {
-            NUnit.Framework.Assert.DoesNotThrow(async () => await BankLogic.ReturnAllUsersSortedOnDateOfCreation());
+            NUnit.Framework.Assert.DoesNotThrowAsync(async () => await _logic.ReturnAllUsersSortedOnDateOfCreation());
         }
     }
 }

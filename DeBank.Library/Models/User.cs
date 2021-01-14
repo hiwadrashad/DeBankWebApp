@@ -9,10 +9,9 @@ namespace DeBank.Library.Models
         [Key]
         public string Id { get; set; }
         public string Name { get; set; }
-        public bool dummyaccount { get; set; }
         public virtual List<BankAccount> Accounts { get; set; }
 
         [Display(Name = "Date of creation")]
-        public DateTime dateofcreation { get; set; }
+        public DateTime DateOfCreation { get; set; }
     }
 }

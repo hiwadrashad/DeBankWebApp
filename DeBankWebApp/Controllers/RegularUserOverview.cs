@@ -1,6 +1,6 @@
 ﻿using DeBank.Library.DAL;
-using DeBank.Library.Interfaces;
 using DeBank.Library.Models;
+using DeBankWebApp.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -23,24 +23,21 @@ namespace DeBankWebApp.Controllers
             User mockuser = new User()
             {
                 Id = Guid.NewGuid().ToString(),
-                dateofcreation = DateTime.Now,
+                DateOfCreation = DateTime.Now,
                 Name = "test",
-                dummyaccount = true,
                 Accounts = new List<BankAccount>()
                 {
                 new BankAccount()
                 {
                  Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
-                 Name = "test",
+                 DateOfCreation = DateTime.Now,
+                 Name = "test 1",
                 },
                  new BankAccount()
                 {
                  Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
-                 Name = "test",
+                 DateOfCreation = DateTime.Now,
+                 Name = "test 2",
                 }
                 }
             };
@@ -58,24 +55,21 @@ namespace DeBankWebApp.Controllers
             User mockuser = new User()
             {
                 Id = Guid.NewGuid().ToString(),
-                dateofcreation = DateTime.Now,
+                DateOfCreation = DateTime.Now,
                 Name = "test",
-                dummyaccount = true,
                 Accounts = new List<BankAccount>()
                 {
                 new BankAccount()
                 {
                  Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
-                 Name = "test",
+                 DateOfCreation = DateTime.Now,
+                 Name = "test 1",
                 },
                  new BankAccount()
                 {
                  Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
-                 Name = "test",
+                 DateOfCreation = DateTime.Now,
+                 Name = "test 2",
                 }
                 }
             };

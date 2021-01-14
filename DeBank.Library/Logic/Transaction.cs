@@ -10,9 +10,9 @@ namespace DeBank.Library.Logic
         [Key]
         public string Id { get; set; }
         public BankAccount Account { get; set; }
+        public BankAccount InteractedAccount { get; set; }
         public decimal Amount { get; set; }
         public string Reason { get; set; }
-        public bool dummytransaction { get; set; }
 
         [Display(Name = "Last executed")]
         public DateTime LastExecuted { get; set; }
@@ -21,9 +21,6 @@ namespace DeBank.Library.Logic
         public bool AlreadyExecuted { get; private set; }
 
         public event EventHandler<string> TransactionLog;
-
-        //public BankAccount RecievingAccount { get; set; }
-
 
         public async Task<bool> Queue()
         {
