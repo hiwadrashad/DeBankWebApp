@@ -1,0 +1,44 @@
+﻿<style>
+    .Isometric {
+        width: 600px;
+        position: absolute;
+
+    }
+    .DivText
+    {
+        display: inline-block;
+        position: relative;
+        font-size: large;
+        color: gray;
+
+    }
+    .DivTitle {
+        position: relative;
+        color: gray;
+    }
+    .LoginBTN {
+        display: inline-block;
+        transform: translate(-600px, 70px);
+    }
+
+</style>
+<h1 class="DivTitle">
+    De Bank
+</h1>
+<div class="DivText">
+    Met De Bank Bankrekening bankier je bij een duurzame bank. <br />
+    Je regelt makkelijk je dagelijkse geldzaken online of met de app. <br />
+    Je krijgt een De Bank Betaalpas waarmee je betaalt en contant geld opneemt in binnen- en buitenland. <br />
+    Let wel op als je contant geld opneemt of betaalt in het buitenland, want daar betaal je soms kosten voor. <br /> 
+    Contactloos betalen kan ook, met je pas of met je telefoon.<br />
+    Het openen doe je online, in een paar eenvoudige stappen.<br />
+</div>
+<img class="Isometric" src="~/Images/isometric_image1.png" />
+<a class="LoginBTN" asp-area="Identity" asp-page="/Account/Login">
+<img src="~/Images/button_log-in.png">
+</a>
+
+<a class="RegisterBTN" asp-area="Identity" asp-page="/Account/Register">
+    <img src="~/Images/button_register (1).png">
+</a>
+ 

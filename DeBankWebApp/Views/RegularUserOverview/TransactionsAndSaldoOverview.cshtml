@@ -1,0 +1,45 @@
+﻿@model IEnumerable<DeBank.Library.Models.BankAccount>
+
+@{
+    ViewData["Title"] = "TransactionsAndSaldoOverview";
+}
+
+<h1>Transactions Overview</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<dt class="col-sm-2">
+    @Html.DisplayNameFor(model => model.FirstOrDefault().Money)
+</dt>
+<dd class="col-sm-10">
+    @Html.DisplayFor(model => model.FirstOrDefault().Money)
+</dd>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().PreviousTransactions.FirstOrDefault().Amount)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().PreviousTransactions.FirstOrDefault().InteractedAccount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.FirstOrDefault().PreviousTransactions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.InteractedAccount)
+                </td>
+                <td>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

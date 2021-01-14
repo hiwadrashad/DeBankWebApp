@@ -1,0 +1,71 @@
+﻿@model DeBank.Library.Models.BankAccount
+
+@{
+    ViewData["Title"] = "ChangeBankAccountData";
+}
+
+
+
+<h4>Change bank account data</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="ChangeBankAccountData">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.Firstname" class="control-label"></label>
+                <input asp-for="info.Firstname" class="form-control" />
+                <span asp-validation-for="info.Firstname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.Addition" class="control-label"></label>
+                <input asp-for="info.Addition" class="form-control" />
+                <span asp-validation-for="info.Addition" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.Lastname" class="control-label"></label>
+                <input asp-for="info.Lastname" class="form-control" />
+                <span asp-validation-for="info.Lastname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.Postalcode" class="control-label"></label>
+                <input asp-for="info.Postalcode" class="form-control" />
+                <span asp-validation-for="info.Postalcode" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.Streetname" class="control-label"></label>
+                <input asp-for="info.Streetname" class="form-control" />
+                <span asp-validation-for="info.Streetname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.Streetnumber" class="control-label"></label>
+                <input asp-for="info.Streetnumber" class="form-control" />
+                <span asp-validation-for="info.Streetnumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.Telephonenumber" class="control-label"></label>
+                <input asp-for="info.Telephonenumber" class="form-control" />
+                <span asp-validation-for="info.Telephonenumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.City" class="control-label"></label>
+                <input asp-for="info.City" class="form-control" />
+                <span asp-validation-for="info.City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="info.Emailadress" class="control-label"></label>
+                <input asp-for="info.Emailadress" class="form-control" />
+                <span asp-validation-for="info.Emailadress" class="text-danger"></span>
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

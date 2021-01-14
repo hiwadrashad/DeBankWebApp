@@ -21,8 +21,18 @@ namespace DeBank.Library.GeneralMethods
             }
         }
     }
+
+
     public static class GeneralMethods
     {
+        public static IEnumerable<T> CreateEnumerable<T>(params T[] items)
+        {
+            if (items == null)
+                yield break;
+
+            foreach (T mitem in items)
+                yield return mitem;
+        }
         public static void ShowGeneralErrorMessage()
         {
             //<summary>
@@ -38,6 +48,13 @@ namespace DeBank.Library.GeneralMethods
         }
 
         public static void ShowMinimumOneBankAccountNeededMessage()
+        {
+            //<summary>
+            // write messagebox dependant on front end platform
+            //<summary>
+        }
+
+        public static void ShowUserNotFoundMessage()
         {
             //<summary>
             // write messagebox dependant on front end platform

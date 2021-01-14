@@ -1,0 +1,88 @@
+﻿@model DeBank.Library.Models.BankAccount
+
+@{
+    ViewData["Title"] = "AccountDetails";
+}
+
+
+<div>
+    <h4>Details</h4>
+    <hr />
+    <dl class="row">
+
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Money)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Money)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IBAN)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IBAN)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.Firstname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.Firstname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.Addition)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.Addition)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.Lastname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.Lastname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.City)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.City)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.Emailadress)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.Emailadress)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.Postalcode)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.Postalcode)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.Streetname)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.Streetname)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.Streetnumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.Streetnumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.info.Telephonenumber)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.info.Telephonenumber)
+        </dd>
+    </dl>
+</div>
+<div>
+</div>
