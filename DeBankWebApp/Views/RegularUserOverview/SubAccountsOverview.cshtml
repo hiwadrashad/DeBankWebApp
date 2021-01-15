@@ -26,7 +26,10 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@if (Model != null)
+{
+    foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -46,6 +49,7 @@
                 @Html.ActionLink("Pay", "Pay", "RegularUserMoneyMutation", new { id = item.Id })
             </td>
         </tr>
+    }
 }
     </tbody>
 </table>

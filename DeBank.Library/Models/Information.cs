@@ -7,6 +7,8 @@ namespace DeBank.Library.Models
 {
     public class Information
     {
+        [Key]
+        public string id { get; set; }
         [Display(Name = "First name")]
         public string Firstname { get; set; }
         public string Addition { get; set; }

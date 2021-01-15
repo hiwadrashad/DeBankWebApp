@@ -84,7 +84,23 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     var item = _dataService.ReturnAllUsers().Where(a => a.Name == Input.Email && a.Password == Input.Password).FirstOrDefault();
-                    StaticResources.CurrentUser.currentuser = item;
+                    if (item == null)
+                    {
+                        var generateduser = new DeBank.Library.Models.User()
+                        {
+                            Id = Guid.NewGuid().ToString(),
+                            DateOfCreation = DateTime.Now,
+                            Email = Input.Email,
+                            Name = Input.Email,
+                            Password = Input.Password
+                        };
+
+                        StaticResources.CurrentUser.currentuser = generateduser;
+                    }
+                    else
+                    {
+                        StaticResources.CurrentUser.currentuser = item;
+                    }
                     TempData["CURRENTUSER"] = item;
                     _logger.LogInformation("User logged in.");
                     return RedirectToAction("SubAccountsOverview", "RegularUserOverview");
