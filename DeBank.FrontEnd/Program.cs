@@ -19,7 +19,7 @@ namespace DeBank.FrontEnd
 
     class Program
     {
-        private static BankLogic _logic = new BankLogic(DataService.GetDataService());
+        private static BankLogic _logic = new BankLogic();
 
         static void Main(string[] args)
         {

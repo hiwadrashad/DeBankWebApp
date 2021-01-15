@@ -8,7 +8,7 @@ using DeBank.Library.DAL;
 
 namespace DeBankWebApp.Data
 {
-    public class DataService : IDataService
+    public class DataService /*: IDataService*/
     {
         private ApplicationDbContext _dbContext = ApplicationDbContext.GetDbContext();
 
