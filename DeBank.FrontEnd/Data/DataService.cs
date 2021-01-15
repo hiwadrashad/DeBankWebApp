@@ -8,7 +8,7 @@ using DeBank.Library.DAL;
 
 namespace DeBank.FrontEnd.Data
 {
-    public class DataService : IDataService
+    public class DataService /*: IDataService*/
     {
         private BankDbContext _dbContext = BankDbContext.GetDbContext();
 
@@ -73,15 +73,15 @@ namespace DeBank.FrontEnd.Data
             return _dbContext.Users.Where(a => a.Id == id).FirstOrDefault();
         }
 
-        public BankAccount ReturnBankAccount(string id)
-        {
-            return _dbContext.BankAccounts.Where(a => a.Id == id).FirstOrDefault();
-        }
+        //public BankAccount ReturnBankAccount(string id)
+        //{
+        //    return _dbContext.Users.Where(a => a.Id == id).FirstOrDefault();
+        //}
 
-        public Transaction ReturnTransaction(string id)
-        {
-            return _dbContext.Transactions.Where(a => a.Id == id).FirstOrDefault();
-        }
+        //public Transaction ReturnTransaction(string id)
+        //{
+        //    return _dbContext.Transactions.Where(a => a.Id == id).FirstOrDefault();
+        //}
 
         public bool UpdateUser(User user)
         {

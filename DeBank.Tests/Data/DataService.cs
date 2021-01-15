@@ -8,7 +8,7 @@ using DeBank.Library.DAL;
 
 namespace DeBank.Tests.Data
 {
-    public class DataService : IDataService
+    public class DataService
     {
         private TestsDbContext _dbContext = new TestsDbContext();
 

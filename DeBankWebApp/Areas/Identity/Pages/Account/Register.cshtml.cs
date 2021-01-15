@@ -5,7 +5,6 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using DeBank.Library.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -72,7 +71,7 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+            DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
             returnUrl = returnUrl ?? Url.Content("~/");
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
@@ -84,11 +83,8 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
                     DeBank.Library.Models.User generaluser = new DeBank.Library.Models.User()
                     {
                         Id = Guid.NewGuid().ToString(),
-                        dateofcreation = DateTime.Now,
-                        dummyaccount = false,
                         Name = Input.Email,
-                        email = Input.Email,
-                        password = Input.Password
+                        Password = Input.Password
                     };
                     _dataService.AddUser(generaluser);
                     _logger.LogInformation("User created a new account with password.");
