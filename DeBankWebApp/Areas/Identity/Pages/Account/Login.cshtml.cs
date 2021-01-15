@@ -74,7 +74,7 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
-            IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+            DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
             returnUrl = returnUrl ?? Url.Content("~/");
 
             if (ModelState.IsValid)

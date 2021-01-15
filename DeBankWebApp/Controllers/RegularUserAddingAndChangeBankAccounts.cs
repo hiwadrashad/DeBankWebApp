@@ -13,7 +13,7 @@ namespace DeBankWebApp.Controllers
 {
     public class RegularUserAddingAndChangeBankAccounts : Controller
     {
-        IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+        DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
         // GET: RegularUserAddingBankAccounts/Create
         public ActionResult GenerateBankAccount()
         {
@@ -34,9 +34,6 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
-                IbanNet.Builders.IbanBuilder builder = new IbanNet.Builders.IbanBuilder();
-                var IBANNumber = builder.Build();
-                account.IBAN = IBANNumber;
                 var item = StaticResources.CurrentUser.currentuser;
                 item.Accounts.Add(account);
                 _dataService.UpdateUser(item);

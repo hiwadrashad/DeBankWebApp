@@ -18,7 +18,7 @@ namespace DeBank.Tests.Data
         {
             if (_logic == null)
             {
-                _logic = new BankLogic(DataService.GetDataService());
+                _logic = new BankLogic();
             }
             return _logic;
         }

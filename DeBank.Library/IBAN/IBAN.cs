@@ -22,9 +22,13 @@ namespace DeBank.Library.IBAN
             }
         }
 
-        public static string GenerateIBANNumber()
+        public static string GenerateIBANNumber(string Bankaccountnumber, string BankIdentifier, string branchidentifier, IbanNet.Registry.IbanCountry country)
         {
             IbanNet.Builders.IbanBuilder builder = new IbanNet.Builders.IbanBuilder();
+            builder.WithBankAccountNumber(Bankaccountnumber);
+            builder.WithBankIdentifier(BankIdentifier);
+            builder.WithBranchIdentifier(branchidentifier);
+            builder.WithCountry(country);
             var IBANNumber = builder.Build();
             return IBANNumber;
         }

@@ -39,7 +39,6 @@ namespace DeBankWebApp.MockingData
                   Streetnumber = "test",
                   Telephonenumber = "test"
                  },
-                 IBAN = IBAN.IBAN.GenerateIBANNumber()
                 },
                  new BankAccount()
                 {
@@ -58,7 +57,6 @@ namespace DeBankWebApp.MockingData
                   Streetnumber = "test",
                   Telephonenumber = "test"
                  },
-                 IBAN = IBAN.IBAN.GenerateIBANNumber()
                 }
                 }
                     };

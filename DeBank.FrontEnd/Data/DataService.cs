@@ -8,7 +8,7 @@ using DeBank.Library.DAL;
 
 namespace DeBank.FrontEnd.Data
 {
-    public class DataService : IDataService
+    public class DataService /*: IDataService*/
     {
         private BankDbContext _dbContext = BankDbContext.GetDbContext();
 

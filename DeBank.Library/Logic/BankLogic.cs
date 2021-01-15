@@ -13,10 +13,10 @@ namespace DeBank.Library.Logic
     {
         private readonly IDataService _service;
 
-        public BankLogic(IDataService service)
-        {
-            _service = service;
-        }
+        //public BankLogic(IDataService)
+        //{
+        //    _service = service;
+        //}
 
         public async Task<bool> AddMoney(BankAccount account, decimal money, string reason = "")
         {
@@ -126,8 +126,9 @@ namespace DeBank.Library.Logic
                     for (int a = 0; a < amountoftimespayment; a++)
                     {
                         Thread.Sleep(25000);
-                        await AddMoney(DummyToAccount, price);
-                        await SpendMoney(DummyFromAccount, price);
+                        BankLogic item = new BankLogic();
+                        await item.AddMoney(DummyToAccount, price);
+                        await item.SpendMoney(DummyFromAccount, price);
                     }
                 }
                 catch (NullReferenceException ex)
@@ -158,7 +159,7 @@ namespace DeBank.Library.Logic
                 {
                     var date = DateTime.Now.AddSeconds(-timeinseconds);
                     var item = user.PreviousTransactions.Where(a => a.LastExecuted > date).ToList();
-                    if (numberEnum == NumberEnums.Positive)
+                    if (positivenegativeornotransactioncheck == NumberEnums.Positive)
                     {
                         return item.Where(a => a.Amount > 0).ToList();
                     }
