@@ -1,5 +1,4 @@
 ﻿using DeBank.Library.GeneralMethods;
-using DeBank.Library.Interfaces;
 using DeBank.Library.Logic;
 using DeBank.Library.Models;
 using System;
@@ -42,21 +41,7 @@ namespace DeBank.Library.DAL
          new User()
          { 
           Id = Guid.NewGuid().ToString(),
-         dateofcreation = DateTime.Now,
-         dummyaccount = true,
          Name = "test",
-         info = new Information()
-         {
-          Addition = "Test",
-          City = "Test",
-          Emailadress = "Test@hotmail.com",
-          Firstname = "Test",
-          Lastname = "Test",
-          Postalcode = "Test",
-          Streetname = "Test",
-          Streetnumber = "Test",
-          Telephonenumber = "Test",
-         },
          }
         };
             _bankaccounts = new List<BankAccount>()
@@ -64,8 +49,6 @@ namespace DeBank.Library.DAL
          new BankAccount()
          {
           Id = Guid.NewGuid().ToString(),
-          dateofcreation = DateTime.Now,
-          dummyaccount = true,
           info = new Information()
          {
           Addition = "Test",
@@ -85,8 +68,6 @@ namespace DeBank.Library.DAL
            new BankAccount()
          {
           Id = Guid.NewGuid().ToString(),
-          dateofcreation = DateTime.Now,
-          dummyaccount = true,
           info = new Information()
          {
           Addition = "Test",
@@ -113,7 +94,6 @@ namespace DeBank.Library.DAL
               { 
                Account = _bankaccounts.FirstOrDefault(),
                Amount = 100,
-               dummytransaction = true, 
                Id = Guid.NewGuid().ToString(),
                InteractedAccount = _bankaccounts.Skip(1).FirstOrDefault(),
                Reason = "Test"

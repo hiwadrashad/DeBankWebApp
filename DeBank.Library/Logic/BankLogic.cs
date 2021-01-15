@@ -13,10 +13,10 @@ namespace DeBank.Library.Logic
     {
         private readonly IDataService _service;
 
-        public BankLogic(IDataService service)
-        {
-            _service = service;
-        }
+        //public BankLogic(IDataService)
+        //{
+        //    _service = service;
+        //}
 
         public async Task<bool> AddMoney(BankAccount account, decimal money, string reason = "")
         {
@@ -25,7 +25,7 @@ namespace DeBank.Library.Logic
                 return false;
             }
 
-            Transaction transaction = new Transaction { Account = account, Amount = money, Reason = reason, dummytransaction = false, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
+            Transaction transaction = new Transaction { Account = account, Amount = money, Reason = reason, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
             transaction.TransactionLog += account.Log;
 
             account.TransactionQueue.Add(transaction);
@@ -112,25 +112,21 @@ namespace DeBank.Library.Logic
                     Id = Guid.NewGuid().ToString(),
                     Money = 1000000,
                     Name = "test",
-                    dummyaccount = true,
-                    dateofcreation = DateTime.Now
                 };
 
                 BankAccount DummyToAccount = new BankAccount()
                 {
                      Id = Guid.NewGuid().ToString(),
-                     dummyaccount = true,
-                     Money = 1000000,
-                     Name = "test",
-                     dateofcreation = DateTime.Now
-                };
+                    Money = 1000000,
+                     Name = "test",                };
                 try
                 {
                     for (int a = 0; a < amountoftimespayment; a++)
                     {
                         Thread.Sleep(25000);
-                        await AddMoney(DummyToAccount, price);
-                        await SpendMoney(DummyFromAccount, price);
+                        BankLogic item = new BankLogic();
+                        await item.AddMoney(DummyToAccount, price);
+                        await item.SpendMoney(DummyFromAccount, price);
                     }
                 }
 #pragma warning disable CS0168 // Variable is declared but never used
@@ -167,7 +163,7 @@ namespace DeBank.Library.Logic
                 {
                     var date = DateTime.Now.AddSeconds(-timeinseconds);
                     var item = user.PreviousTransactions.Where(a => a.LastExecuted > date).ToList();
-                    if (numberEnum == NumberEnums.Positive)
+                    if (positivenegativeornotransactioncheck == Enums.PositiveNegativeOrAllTransactions.Positive)
                     {
                         return item.Where(a => a.Amount > 0).ToList();
                     }
@@ -417,10 +413,10 @@ namespace DeBank.Library.Logic
                 return false;
             }
 
-            bool result = await SpendMoney(account1,account2, money, false, "Geld overmaken naar " + account2.Owner.Name + (reason != "" ? ": " + reason : ""));
+            bool result = await SpendMoney(account1, money, false, "Geld overmaken naar " + account2.Owner.Name + (reason != "" ? ": " + reason : ""));
             if (result)
             {
-                await AddMoney(account2,account1, money, "Geld overmaken van " + account1.Owner.Name + (reason != "" ? ": " + reason : ""));
+                await AddMoney(account2, money, "Geld overmaken van " + account1.Owner.Name + (reason != "" ? ": " + reason : ""));
             }
 
             return result;

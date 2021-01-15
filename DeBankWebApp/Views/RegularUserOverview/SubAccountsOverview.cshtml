@@ -21,9 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Id)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.dateofcreation)
-            </th>
+
             <th></th>
         </tr>
     </thead>
@@ -38,9 +36,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.dateofcreation)
             </td>
             <td>
                 @Html.ActionLink("Edit data", "ChangeBankAccountData", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id }) |

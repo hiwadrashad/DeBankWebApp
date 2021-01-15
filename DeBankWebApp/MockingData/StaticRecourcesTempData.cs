@@ -18,16 +18,12 @@ namespace DeBankWebApp.MockingData
                     User mockuser = new User()
                     {
                         Id = Guid.NewGuid().ToString(),
-                        dateofcreation = DateTime.Now,
                         Name = "test",
-                        dummyaccount = true,
                         Accounts = new List<BankAccount>()
                 {
                 new BankAccount()
                 {
                  Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
                  Name = "test",
                  info = new Information()
                  {
@@ -45,8 +41,6 @@ namespace DeBankWebApp.MockingData
                  new BankAccount()
                 {
                  Id = Guid.NewGuid().ToString(),
-                 dateofcreation = DateTime.Now,
-                 dummyaccount = true,
                  Name = "test",
                  info = new Information()
                  {

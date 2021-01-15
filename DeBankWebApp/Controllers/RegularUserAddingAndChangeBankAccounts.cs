@@ -13,15 +13,13 @@ namespace DeBankWebApp.Controllers
 {
     public class RegularUserAddingAndChangeBankAccounts : Controller
     {
-        IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+        DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
         // GET: RegularUserAddingBankAccounts/Create
         public ActionResult GenerateBankAccount()
         {
             BankAccount account = new BankAccount()
             {
                 Id = Guid.NewGuid().ToString(),
-                dateofcreation = DateTime.Now,
-                dummyaccount = false,
                 Owner = StaticResources.CurrentUser.currentuser,
             };
             return View(account);

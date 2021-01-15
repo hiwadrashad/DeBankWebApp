@@ -1,6 +1,5 @@
 ﻿using DeBank.Library.DAL;
 using DeBank.Library.GeneralMethods;
-using DeBank.Library.Interfaces;
 using DeBank.Library.Models;
 using DeBankWebApp.ViewModels;
 using Microsoft.AspNetCore.Http;
@@ -8,12 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
 using DeBank.Library.Logic;
+using System.Linq;
 
 namespace DeBankWebApp.Controllers
 {
     public class RegularUserMoneyMutation : Controller
     {
-        IDataService _dataService = MockingData.GetMockDataService();
+        DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
 
         // GET: RegularUserMoneyMutation
         public ActionResult TransferMoney(string id)
@@ -22,7 +22,6 @@ namespace DeBankWebApp.Controllers
             transaction = new DeBank.Library.Logic.Transaction()
             {
                 Id = Guid.NewGuid().ToString(),
-                dummytransaction = false,
                 Account = _dataService.ReturnBankAccount(id)
             };
             return View(transaction);
@@ -35,7 +34,8 @@ namespace DeBankWebApp.Controllers
             if (_dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).Any())
             {
                 transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).FirstOrDefault();
-                await DeBank.Library.Logic.BankLogic.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
+                BankLogic item = new BankLogic();
+                await item.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
                 return View();
             }
             else
@@ -43,7 +43,7 @@ namespace DeBankWebApp.Controllers
                 GeneralMethods.ShowUserNotFoundMessage();
                 return View();
             }
-            BankLogic bank = WebBankLogic.GetBankLogic();
+            BankLogic bank = new BankLogic();
 
             await bank.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
             return View();
@@ -58,7 +58,6 @@ namespace DeBankWebApp.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 Account = _dataService.ReturnBankAccount(id),
-                dummytransaction = false,
             };
             return View(transaction);
         }
