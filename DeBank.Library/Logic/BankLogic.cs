@@ -25,7 +25,7 @@ namespace DeBank.Library.Logic
                 return false;
             }
 
-            Transaction transaction = new Transaction { Account = account, Amount = money, Reason = reason, dummytransaction = false, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
+            Transaction transaction = new Transaction { Account = account, Amount = money, Reason = reason, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
             transaction.TransactionLog += account.Log;
 
             account.TransactionQueue.Add(transaction);
@@ -100,9 +100,8 @@ namespace DeBank.Library.Logic
             //}
         }
 
-        public static async Task AutomatedRecurringPayments(decimal price, int amountoftimespayment) //required project assignment
+        public async Task AutomatedRecurringPayments(decimal price, int amountoftimespayment) //required project assignment
         {
-            
             var lockingobject = new object();
             Monitor.Enter(lockingobject);
             using (var transactionrollback = new TransactionScope())
@@ -112,17 +111,15 @@ namespace DeBank.Library.Logic
                     Id = Guid.NewGuid().ToString(),
                     Money = 1000000,
                     Name = "test",
-                    dummyaccount = true,
-                    dateofcreation = DateTime.Now
+                    DateOfCreation = DateTime.Now
                 };
 
                 BankAccount DummyToAccount = new BankAccount()
                 {
                      Id = Guid.NewGuid().ToString(),
-                     dummyaccount = true,
                      Money = 1000000,
                      Name = "test",
-                     dateofcreation = DateTime.Now
+                    DateOfCreation = DateTime.Now
                 };
                 try
                 {
@@ -133,21 +130,15 @@ namespace DeBank.Library.Logic
                         await SpendMoney(DummyFromAccount, price);
                     }
                 }
-#pragma warning disable CS0168 // Variable is declared but never used
                 catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
                 {
                     GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
                 }
-#pragma warning disable CS0168 // Variable is declared but never used
                 catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
                 {
                     GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
                 }
-#pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
                 {
                     GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
                 }
@@ -159,7 +150,7 @@ namespace DeBank.Library.Logic
             }
         }
 #nullable enable
-        public static async Task<List<Logic.Transaction>>? ReturnTransactionsWithinTimeFrame(BankAccount user, int timeinseconds, Enums.PositiveNegativeOrAllTransactions positivenegativeornotransactioncheck)
+        public async Task<List<Transaction>>? ReturnTransactionsWithinTimeFrame(BankAccount user, int timeinseconds, NumberEnums numberEnum)
         {
             try
             {
@@ -417,10 +408,10 @@ namespace DeBank.Library.Logic
                 return false;
             }
 
-            bool result = await SpendMoney(account1,account2, money, false, "Geld overmaken naar " + account2.Owner.Name + (reason != "" ? ": " + reason : ""));
+            bool result = await SpendMoney(account1, money, false, "Geld overmaken naar " + account2.Owner.Name + (reason != "" ? ": " + reason : ""));
             if (result)
             {
-                await AddMoney(account2,account1, money, "Geld overmaken van " + account1.Owner.Name + (reason != "" ? ": " + reason : ""));
+                await AddMoney(account2, money, "Geld overmaken van " + account1.Owner.Name + (reason != "" ? ": " + reason : ""));
             }
 
             return result;

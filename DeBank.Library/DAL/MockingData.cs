@@ -1,12 +1,9 @@
 ﻿using DeBank.Library.GeneralMethods;
-using DeBank.Library.Interfaces;
 using DeBank.Library.Logic;
 using DeBank.Library.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Transactions;
 
 namespace DeBank.Library.DAL
 {
@@ -14,7 +11,7 @@ namespace DeBank.Library.DAL
     {
         private List<User> _users;
         private List<BankAccount> _bankaccounts;
-        private List<Logic.Transaction> _transactions;
+        private List<Transaction> _transactions;
 
         private static MockingData _MockingdataService;
 
@@ -42,10 +39,9 @@ namespace DeBank.Library.DAL
          new User()
          { 
           Id = Guid.NewGuid().ToString(),
-         dateofcreation = DateTime.Now,
-         dummyaccount = true,
+         DateOfCreation = DateTime.Now,
          Name = "test",
-         info = new Information()
+         Info = new Information()
          {
           Addition = "Test",
           City = "Test",
@@ -64,9 +60,8 @@ namespace DeBank.Library.DAL
          new BankAccount()
          {
           Id = Guid.NewGuid().ToString(),
-          dateofcreation = DateTime.Now,
-          dummyaccount = true,
-          IBAN = DeBank.Library.IBAN.IBAN.GenerateIBANNumber(),
+          DateOfCreation = DateTime.Now,
+          IBAN = Library.IBAN.IBAN.GenerateIBANNumber(),
           info = new Information()
          {
           Addition = "Test",
@@ -86,9 +81,8 @@ namespace DeBank.Library.DAL
            new BankAccount()
          {
           Id = Guid.NewGuid().ToString(),
-          dateofcreation = DateTime.Now,
-          dummyaccount = true,
-          IBAN = DeBank.Library.IBAN.IBAN.GenerateIBANNumber(),
+          DateOfCreation = DateTime.Now,
+          IBAN = Library.IBAN.IBAN.GenerateIBANNumber(),
           info = new Information()
          {
           Addition = "Test",
@@ -109,13 +103,12 @@ namespace DeBank.Library.DAL
 
             _users.FirstOrDefault().Accounts = _bankaccounts;
 
-            _transactions = new List<Logic.Transaction>()
+            _transactions = new List<Transaction>()
             {
-              new Logic.Transaction()
+              new Transaction()
               { 
                Account = _bankaccounts.FirstOrDefault(),
                Amount = 100,
-               dummytransaction = true, 
                Id = Guid.NewGuid().ToString(),
                InteractedAccount = _bankaccounts.Skip(1).FirstOrDefault(),
                Reason = "Test"

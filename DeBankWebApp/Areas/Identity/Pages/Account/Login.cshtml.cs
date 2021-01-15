@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
-using DeBank.Library.Interfaces;
+using DeBank.Library.DAL;
 
 namespace DeBankWebApp.Areas.Identity.Pages.Account
 {
@@ -84,7 +84,7 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
                 var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, Input.RememberMe, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    var item = _dataService.ReturnAllUsers().Where(a => a.Name == Input.Email && a.password == Input.Password).FirstOrDefault();
+                    var item = _dataService.ReturnAllUsers().Where(a => a.Name == Input.Email && a.Password == Input.Password).FirstOrDefault();
                     StaticResources.CurrentUser.currentuser = item;
                     TempData["CURRENTUSER"] = item;
                     _logger.LogInformation("User logged in.");

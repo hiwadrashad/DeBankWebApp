@@ -75,12 +75,12 @@ namespace DeBank.FrontEnd.Data
 
         public BankAccount ReturnBankAccount(string id)
         {
-            return _dbContext.BankAccounts.Where(a => a.Id == id).FirstOrDefault();
+            return ReturnAllBankAccounts().Where(a => a.Id == id).FirstOrDefault();
         }
 
         public Transaction ReturnTransaction(string id)
         {
-            return _dbContext.Transactions.Where(a => a.Id == id).FirstOrDefault();
+            return ReturnAllTransactions().Where(a => a.Id == id).FirstOrDefault();
         }
 
         public bool UpdateUser(User user)

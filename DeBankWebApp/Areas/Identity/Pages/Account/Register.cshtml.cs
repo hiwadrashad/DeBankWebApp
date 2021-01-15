@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
-using DeBank.Library.Interfaces;
+using DeBank.Library.DAL;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -84,11 +84,10 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
                     DeBank.Library.Models.User generaluser = new DeBank.Library.Models.User()
                     {
                         Id = Guid.NewGuid().ToString(),
-                        dateofcreation = DateTime.Now,
-                        dummyaccount = false,
+                        DateOfCreation = DateTime.Now,
                         Name = Input.Email,
-                        email = Input.Email,
-                        password = Input.Password
+                        Email = Input.Email,
+                        Password = Input.Password
                     };
                     _dataService.AddUser(generaluser);
                     _logger.LogInformation("User created a new account with password.");

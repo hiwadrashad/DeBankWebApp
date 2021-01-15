@@ -18,8 +18,6 @@ namespace DeBank.Library.DAL
         Filter<BankAccount> ReturnAllBankAccountsUnder(decimal thresholdMoney);
         User ReturnUser(string id);
         BankAccount ReturnBankAccount(string id);
-        Logic.Transaction ReturnTransaction(string id);
-
-
+        Transaction ReturnTransaction(string id);
     }
 }
