@@ -9,8 +9,11 @@ namespace DeBankWebApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        private ApplicationDbContext()
+        private static DbContextOptions _options;
+
+        public ApplicationDbContext(DbContextOptions options) : base(options)
         {
+            _options = options;
         }
 
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> option) : base(option)
@@ -23,7 +26,7 @@ namespace DeBankWebApp.Data
         {
             if (_dbContext != null)
             {
-                _dbContext = new ApplicationDbContext();
+                _dbContext = new ApplicationDbContext(_options);
             }
             return _dbContext;
         }

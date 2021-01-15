@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
+using DeBank.Library.DAL;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -83,7 +84,9 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
                     DeBank.Library.Models.User generaluser = new DeBank.Library.Models.User()
                     {
                         Id = Guid.NewGuid().ToString(),
+                        DateOfCreation = DateTime.Now,
                         Name = Input.Email,
+                        Email = Input.Email,
                         Password = Input.Password
                     };
                     _dataService.AddUser(generaluser);

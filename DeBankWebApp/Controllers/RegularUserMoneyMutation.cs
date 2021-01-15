@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Threading.Tasks;
+using System.Linq;
 using DeBank.Library.Logic;
 using System.Linq;
 
@@ -13,13 +14,13 @@ namespace DeBankWebApp.Controllers
 {
     public class RegularUserMoneyMutation : Controller
     {
-        DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+        IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
 
         // GET: RegularUserMoneyMutation
         public ActionResult TransferMoney(string id)
         {
-            DeBank.Library.Logic.Transaction transaction = new DeBank.Library.Logic.Transaction();
-            transaction = new DeBank.Library.Logic.Transaction()
+            Transaction transaction = new Transaction();
+            transaction = new Transaction()
             {
                 Id = Guid.NewGuid().ToString(),
                 Account = _dataService.ReturnBankAccount(id)
@@ -31,11 +32,11 @@ namespace DeBankWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> TransferMoney(Transaction transaction)
         {
-            if (_dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).Any())
+            BankLogic bank = WebBankLogic.GetBankLogic();
+            if (_dataService.ReturnAllBankAccounts().Where(a => a.IBAN == transaction.InteractedAccount.IBAN).Any())
             {
-                transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).FirstOrDefault();
-                BankLogic item = new BankLogic();
-                await item.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
+                transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.IBAN == transaction.InteractedAccount.IBAN).FirstOrDefault();
+                await bank.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
                 return View();
             }
             else
@@ -43,18 +44,14 @@ namespace DeBankWebApp.Controllers
                 GeneralMethods.ShowUserNotFoundMessage();
                 return View();
             }
-            BankLogic bank = new BankLogic();
-
-            await bank.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
-            return View();
         }
 
 
         // GET: RegularUserMoneyMutation/Edit/5
         public ActionResult Pay(string id)
         {
-            DeBank.Library.Logic.Transaction transaction = new DeBank.Library.Logic.Transaction();
-            transaction = new DeBank.Library.Logic.Transaction()
+            Transaction transaction = new Transaction();
+            transaction = new Transaction()
             {
                 Id = Guid.NewGuid().ToString(),
                 Account = _dataService.ReturnBankAccount(id),
@@ -71,7 +68,7 @@ namespace DeBankWebApp.Controllers
         // POST: RegularUserMoneyMutation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Pay(DeBank.Library.Logic.Transaction transaction)
+        public ActionResult Pay(Transaction transaction)
         {
             try
             {
@@ -85,7 +82,7 @@ namespace DeBankWebApp.Controllers
                     GeneralMethods.ShowUserNotFoundMessage();
                     return View();
                 }
-                //DeBank.Library.Logic.BankLogic.SpendMoney();
+                //BankLogic.SpendMoney();
             }
             catch
             {

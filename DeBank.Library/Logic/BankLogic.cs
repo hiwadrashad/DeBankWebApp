@@ -100,9 +100,8 @@ namespace DeBank.Library.Logic
             //}
         }
 
-        public static async Task AutomatedRecurringPayments(decimal price, int amountoftimespayment) //required project assignment
+        public async Task AutomatedRecurringPayments(decimal price, int amountoftimespayment) //required project assignment
         {
-            
             var lockingobject = new object();
             Monitor.Enter(lockingobject);
             using (var transactionrollback = new TransactionScope())
@@ -112,13 +111,16 @@ namespace DeBank.Library.Logic
                     Id = Guid.NewGuid().ToString(),
                     Money = 1000000,
                     Name = "test",
+                    DateOfCreation = DateTime.Now
                 };
 
                 BankAccount DummyToAccount = new BankAccount()
                 {
                      Id = Guid.NewGuid().ToString(),
-                    Money = 1000000,
-                     Name = "test",                };
+                     Money = 1000000,
+                     Name = "test",
+                    DateOfCreation = DateTime.Now
+                };
                 try
                 {
                     for (int a = 0; a < amountoftimespayment; a++)
@@ -129,21 +131,15 @@ namespace DeBank.Library.Logic
                         await item.SpendMoney(DummyFromAccount, price);
                     }
                 }
-#pragma warning disable CS0168 // Variable is declared but never used
                 catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
                 {
                     GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
                 }
-#pragma warning disable CS0168 // Variable is declared but never used
                 catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
                 {
                     GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
                 }
-#pragma warning disable CS0168 // Variable is declared but never used
                 catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
                 {
                     GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
                 }
@@ -155,7 +151,7 @@ namespace DeBank.Library.Logic
             }
         }
 #nullable enable
-        public static async Task<List<Logic.Transaction>>? ReturnTransactionsWithinTimeFrame(BankAccount user, int timeinseconds, DeBank.Library.Logic.NumberEnums positivenegativeornotransactioncheck)
+        public async Task<List<Transaction>>? ReturnTransactionsWithinTimeFrame(BankAccount user, int timeinseconds, NumberEnums numberEnum)
         {
             try
             {

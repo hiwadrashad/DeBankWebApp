@@ -69,6 +69,21 @@ namespace DeBank.Tests.Data
             return transactions;
         }
 
+        public User ReturnUser(string id)
+        {
+            return _dbContext.Users.Where(a => a.Id == id).FirstOrDefault();
+        }
+
+        public BankAccount ReturnBankAccount(string id)
+        {
+            return ReturnAllBankAccounts().Where(a => a.Id == id).FirstOrDefault();
+        }
+
+        public Transaction ReturnTransaction(string id)
+        {
+            return ReturnAllTransactions().Where(a => a.Id == id).FirstOrDefault();
+        }
+
         public bool UpdateUser(User user)
         {
             var item = _dbContext.Users.Where(a => a.Id == user.Id).FirstOrDefault();
