@@ -9,17 +9,16 @@ namespace DeBank.Library.Models
         [Key]
         public string Id { get; set; }
 
-        [Display(Name = "User name")]
+        [Display(Name = "Naam")]
         public string Name { get; set; }
-        public Information info { get; set; }
-        public string password { get; set; }
+        public Information Info { get; set; }
 
         [EmailAddress]
-        public string email { get; set; }
-        public bool dummyaccount { get; set; }
+        public string Email { get; set; }
+        public string Password { get; set; }
         public virtual List<BankAccount> Accounts { get; set; }
 
         [Display(Name = "Date of creation")]
-        public DateTime dateofcreation { get; set; }
+        public DateTime DateOfCreation { get; set; }
     }
 }

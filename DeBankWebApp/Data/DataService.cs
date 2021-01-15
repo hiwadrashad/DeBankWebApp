@@ -1,16 +1,16 @@
-﻿using DeBank.Library.Interfaces;
-using DeBank.Library.Models;
+﻿using DeBank.Library.Models;
 using System.Collections.Generic;
 using System.Linq;
 using DeBank.Library.Logic;
 using DeBank.Library.GeneralMethods;
 using System;
+using DeBank.Library.DAL;
 
-namespace DeBank.Library.DAL
+namespace DeBankWebApp.Data
 {
-    public class DataService :IDataService
+    public class DataService : IDataService
     {
-        private BankDbContext _dbContext = BankDbContext.GetDbContext();
+        private ApplicationDbContext _dbContext = ApplicationDbContext.GetDbContext();
 
         private static DataService _dataService;
 
@@ -27,39 +27,16 @@ namespace DeBank.Library.DAL
             }
             return _dataService;
         }
+
         public bool AddUser(User user)
         {
             _dbContext.Users.Add(user);
             return true;
         }
 
-        public bool AddBankaccounts(BankAccount bank)
-        {
-            _dbContext.BankAccounts.Add(bank);
-            return true;
-        }
-
-        public bool AddTransaction(Transaction transaction)
-        {
-            _dbContext.Transactions.Add(transaction);
-            return true;
-        }
-
         public bool RemoveUser(User user)
         {
             _dbContext.Users.Remove(user);
-            return true;
-        }
-
-        public bool RemoveBankaccounts(BankAccount bank)
-        {
-            _dbContext.BankAccounts.Remove(bank);
-            return true;
-        }
-
-        public bool RemoveTransaction(Transaction transaction)
-        {
-            _dbContext.Transactions.Remove(transaction);
             return true;
         }
 
@@ -70,47 +47,32 @@ namespace DeBank.Library.DAL
 
         public List<BankAccount> ReturnAllBankAccounts()
         {
-            return _dbContext.BankAccounts.ToList();
+            List<BankAccount> accounts = new List<BankAccount>();
+
+            foreach(User user in ReturnAllUsers())
+            {
+                accounts.AddRange(user.Accounts);
+            }
+
+            return accounts;
         }
+
         public List<Transaction> ReturnAllTransactions()
         {
-            return _dbContext.Transactions.ToList();
-        }
+            List<Transaction> transactions = new List<Transaction>();
 
-        public User ReturnUser(string id)
-        {
-            return _dbContext.Users.Where(a => a.Id == id).FirstOrDefault();
-        }
+            foreach (BankAccount user in ReturnAllBankAccounts())
+            {
+                transactions.AddRange(user.PreviousTransactions);
+            }
 
-        public BankAccount ReturnBankAccount(string id)
-        {
-            return _dbContext.BankAccounts.Where(a => a.Id == id).FirstOrDefault();
-        }
-
-        public Transaction ReturnTransaction(string id)
-        {
-            return _dbContext.Transactions.Where(a => a.Id == id).FirstOrDefault();
+            return transactions;
         }
 
         public bool UpdateUser(User user)
         {
             var item = _dbContext.Users.Where(a => a.Id == user.Id).FirstOrDefault();
             item = user;
-            _dbContext.SaveChanges();
-            return true;
-        }
-
-        public bool UpdateBank(BankAccount bank)
-        {
-            var item = _dbContext.BankAccounts.Where(a => a.Id == bank.Id).FirstOrDefault();
-            item = bank;
-            _dbContext.SaveChanges();
-            return true;
-        }
-        public bool UpdateTransactions(Transaction transaction)
-        {
-            var item = _dbContext.Transactions.Where(a => a.Id == transaction.Id).FirstOrDefault();
-            item = transaction;
             _dbContext.SaveChanges();
             return true;
         }

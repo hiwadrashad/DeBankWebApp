@@ -1,4 +1,5 @@
-﻿using DeBank.Library;
+﻿using DeBank.FrontEnd.Data;
+using DeBank.Library;
 using DeBank.Library.Logic;
 using DeBank.Library.Models;
 using System;
@@ -18,6 +19,8 @@ namespace DeBank.FrontEnd
 
     class Program
     {
+        private static BankLogic _logic = new BankLogic(DataService.GetDataService());
+
         static void Main(string[] args)
         {
             using (var db = new BankDbContext())
@@ -55,7 +58,7 @@ namespace DeBank.FrontEnd
 
             TransferMoneyStruct strct = (TransferMoneyStruct) obj;
 
-            await BankLogic.TransferMoney(strct.Account1, strct.Account2, 10, "Testen");
+            await _logic.TransferMoney(strct.Account1, strct.Account2, 10, "Testen");
 
             Console.WriteLine("Users (AFTER):");
             foreach (User user in strct.Users)

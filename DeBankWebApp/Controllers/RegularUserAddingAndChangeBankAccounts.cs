@@ -1,7 +1,7 @@
 ﻿using DeBank.Library.DAL;
 using DeBank.Library.GeneralMethods;
-using DeBank.Library.Interfaces;
 using DeBank.Library.Models;
+using DeBankWebApp.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -67,7 +67,6 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
-                _dataService.UpdateBank(account);
                 var item = StaticResources.CurrentUser.currentuser;
                 var item2 = item.Accounts.Where(a => a.Id == account.Id).FirstOrDefault();
                 item2 = account;
@@ -102,7 +101,6 @@ namespace DeBankWebApp.Controllers
                 }
                 else
                 {
-                    _dataService.RemoveBankaccounts(account);
                     item.Accounts.Remove(account);
                     _dataService.UpdateUser(item);
                 }

@@ -11,178 +11,93 @@ namespace DeBank.Library.Logic
 {
     public class BankLogic
     {
+        private readonly IDataService _service;
 
-        public static async Task<bool> AddMoney(BankAccount account, BankAccount opossiteaccount, decimal money, string reason = "")
+        public BankLogic(IDataService service)
         {
-
-            Interfaces.IDataService _dataService = DataService.GetDataService();
-            if (money < 0)
-            {
-                return false;
-            }
-
-                Transaction transaction = new Transaction { Account = account, InteractedAccount = opossiteaccount, Amount = money, Reason = reason, dummytransaction = false, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
-          
-            transaction.TransactionLog += account.Log;
-            account.TransactionQueue.Add(transaction);
-            bool result = await transaction.Queue();
-            account.TransactionQueue.Remove(transaction);
-
-            account.PreviousTransactions.Add(transaction);
-
-            //<summary>
-            //added code start
-            //<summary>
-            _dataService.AddTransaction(transaction);
-            _dataService.UpdateBank(account);
-            var UserSuperAccount = _dataService.ReturnAllUsers().Where(a => a.Accounts.Where(a => a.Id == account.Id).Any()).FirstOrDefault();
-            _dataService.UpdateUser(UserSuperAccount);
-            //<summary>
-            //added code end
-            //<summary>
-
-            return result;
+            _service = service;
         }
 
-        public static async Task<bool> AddMoney(BankAccount account, decimal money, string reason = "")
+        public async Task<bool> AddMoney(BankAccount account, decimal money, string reason = "")
         {
-
-            Interfaces.IDataService _dataService = DataService.GetDataService();
             if (money < 0)
             {
                 return false;
             }
 
             Transaction transaction = new Transaction { Account = account, Amount = money, Reason = reason, dummytransaction = false, Id = Guid.NewGuid().ToString(), LastExecuted = DateTime.Now };
-
             transaction.TransactionLog += account.Log;
+
             account.TransactionQueue.Add(transaction);
             bool result = await transaction.Queue();
             account.TransactionQueue.Remove(transaction);
 
             account.PreviousTransactions.Add(transaction);
 
-            //<summary>
-            //added code start
-            //<summary>
-            _dataService.AddTransaction(transaction);
-            _dataService.UpdateBank(account);
-            var UserSuperAccount = _dataService.ReturnAllUsers().Where(a => a.Accounts.Where(a => a.Id == account.Id).Any()).FirstOrDefault();
-            _dataService.UpdateUser(UserSuperAccount);
-            //<summary>
-            //added code end
-            //<summary>
-
             return result;
         }
 
-        //<summary>
-        //added code start
-        //<summary>
-        public static async Task AddUser(string Name, bool dummyornot)
+        public async Task<User> AddUser(string Name)
         {
-            var lockingobject = new object();
-            Monitor.Enter(lockingobject);
-            try
+            //var lockingobject = new object();
+            //Monitor.Enter(lockingobject);
+            //try
+            //{
+            return await Task.Run(() =>
             {
-                if (dummyornot == false)
+                User user = new User()
                 {
-                    await Task.Run(() =>
-                    {
-                        Interfaces.IDataService _dataService = DataService.GetDataService();
-                        User user = new User()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = Name,
-                            Accounts = new List<BankAccount>()
-                            { },
-                            dummyaccount = false,
-                            dateofcreation = DateTime.Now
-                        };
-                        _dataService.AddUser(user);
-                    });
-                }
-                else
-                {
-                    await Task.Run(() =>
-                    {
-                        Interfaces.IDataService _dataService = DataService.GetDataService();
-                        User user = new User()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Name = Name,
-                            Accounts = new List<BankAccount>()
-                            { },
-                            dummyaccount = true,
-                            dateofcreation = DateTime.Now
-                        };
-                        _dataService.AddUser(user);
-                    });
-                }
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
-            catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
-            {
-                GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-            }
-            finally
-            {
-                Monitor.Exit(lockingobject);
-            }
+                    Id = Guid.NewGuid().ToString(),
+                    Name = Name,
+                    Accounts = new List<BankAccount>()
+                    { },
+                    DateOfCreation = DateTime.Now
+                };
+                _service.AddUser(user);
+
+                return user;
+            });
+            //}
+            //catch (Exception ex)
+            //{
+            //    GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
+            //}
+            //finally
+            //{
+            //    Monitor.Exit(lockingobject);
+            //}
         }
 
-        public static async Task AddBankAccount(User owner,string name, decimal money, bool dummyornot)
+        public async Task<BankAccount> AddBankAccount(User owner, string name, decimal money)
         {
-            var lockingobject = new object();
-            Monitor.Enter(lockingobject);
-            try
+            //var lockingobject = new object();
+            //Monitor.Enter(lockingobject);
+            //try
+            //{
+            return await Task.Run(() =>
             {
-                if (dummyornot == false)
+                BankAccount account = new BankAccount()
                 {
-                    await Task.Run(() =>
-                    {
-                        Interfaces.IDataService _dataService = DataService.GetDataService();
-                        BankAccount user = new BankAccount()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Money = money,
-                            Name = name,
-                            Owner = owner,
-                            dummyaccount = false,
-                            dateofcreation = DateTime.Now,
-                        };
-                        _dataService.AddBankaccounts(user);
-                    });
-                }
-                else
-                {
-                    await Task.Run(() =>
-                    {
-                        Interfaces.IDataService _dataService = DataService.GetDataService();
-                        BankAccount user = new BankAccount()
-                        {
-                            Id = Guid.NewGuid().ToString(),
-                            Money = money,
-                            Name = name,
-                            Owner = owner,
-                            dummyaccount = false,
-                            dateofcreation = DateTime.Now
-                        };
-                        _dataService.AddBankaccounts(user);
-                    });
-                }
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
-            catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
-            {
-                GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-            }
-            finally
-            {
-                Monitor.Exit(lockingobject);
-            }
+                    Id = Guid.NewGuid().ToString(),
+                    Money = money,
+                    Name = name,
+                    Owner = owner,
+                    DateOfCreation = DateTime.Now
+                };
+                owner.Accounts.Add(account);
+                _service.UpdateUser(owner);
+
+                return account;
+            });
+            //}
+            //catch (Exception ex)
+            //{
+            //    GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
+            //}
+            //finally
+            //{
+            //    Monitor.Exit(lockingobject);
+            //}
         }
 
         public static async Task AutomatedRecurringPayments(decimal price, int amountoftimespayment) //required project assignment
@@ -214,8 +129,8 @@ namespace DeBank.Library.Logic
                     for (int a = 0; a < amountoftimespayment; a++)
                     {
                         Thread.Sleep(25000);
-                        await AddMoney(DummyToAccount, DummyFromAccount, price);
-                        await SpendMoney(DummyFromAccount,DummyToAccount, price);
+                        await AddMoney(DummyToAccount, price);
+                        await SpendMoney(DummyFromAccount, price);
                     }
                 }
 #pragma warning disable CS0168 // Variable is declared but never used
@@ -249,363 +164,241 @@ namespace DeBank.Library.Logic
             try
             {
                 return await Task.Run(() =>
-            {
-                var date = DateTime.Now.AddSeconds(-timeinseconds);
-                var item = user.PreviousTransactions.Where(a => a.LastExecuted > date).ToList();
-                if (positivenegativeornotransactioncheck == Enums.PositiveNegativeOrAllTransactions.none)
                 {
-                    return item;
-                }
-                if (positivenegativeornotransactioncheck == Enums.PositiveNegativeOrAllTransactions.positive)
-                {
-                    return item.Where(a => a.Amount > 0).ToList();
-                }
-                else
-                {
-                    return item.Where(a => a.Amount < 0).ToList();
+                    var date = DateTime.Now.AddSeconds(-timeinseconds);
+                    var item = user.PreviousTransactions.Where(a => a.LastExecuted > date).ToList();
+                    if (numberEnum == NumberEnums.Positive)
+                    {
+                        return item.Where(a => a.Amount > 0).ToList();
+                    }
+                    else
+                    {
+                        return item.Where(a => a.Amount < 0).ToList();
 
-                }
+                    }
+                });
             }
-            );
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
         }
 
 
-        public static async Task<List<BankAccount>>? ReturnAllusersBeneathOrAboveGivenValue(decimal saldolimit, bool AboveValue)
+        public async Task<List<BankAccount>>? ReturnAllusersBeneathOrAboveGivenValue(decimal saldolimit, bool AboveValue)
         {
             try
             {
-                Interfaces.IDataService _dataService = DataService.GetDataService();
-
                 if (AboveValue == true)
                 {
                     return await Task.Run(() =>
                     {
-                        return _dataService.ReturnAllBankAccounts().Where(a => a.Money > saldolimit).ToList();
-                    }
-                    );
+                        return _service.ReturnAllBankAccounts().Where(a => a.Money > saldolimit).ToList();
+                    });
                 }
                 else
                 {
                     return await Task.Run(() =>
                     {
-                        return _dataService.ReturnAllBankAccounts().Where(a => a.Money < saldolimit).ToList();
-                    }
-                   );
+                        return _service.ReturnAllBankAccounts().Where(a => a.Money < saldolimit).ToList();
+                    });
                 }
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
         }
 
 
-        public static async Task<List<BankAccount>>? ReturnAllUsersSortedOnName()
+        public async Task<List<BankAccount>>? ReturnAllUsersSortedOnName()
         {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
             try
             {
                 return await Task.Run(() =>
-            {
-                return _dataService.ReturnAllBankAccounts().OrderBy(a => a.Name).ToList();
+                {
+                    return _service.ReturnAllBankAccounts().OrderBy(a => a.Name).ToList();
+                });
             }
-            );
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
         }
 
-        public static async Task<List<BankAccount>>? ReturnAllUsersReverseSortedOnName()
+        public async Task<List<BankAccount>>? ReturnAllUsersReverseSortedOnName()
         {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
             try
             {
                 return await Task.Run(() =>
-            {
-                return _dataService.ReturnAllBankAccounts().OrderByDescending(a => a.Name).ToList();
+                {
+                    return _service.ReturnAllBankAccounts().OrderByDescending(a => a.Name).ToList();
+                });
             }
-            );
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
         }
 
-        public static async Task<List<BankAccount>>? ReturnAllUsersSortedOnSaldo()
+        public async Task<List<BankAccount>>? ReturnAllUsersSortedOnSaldo()
         {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
             try
             {
                 return await Task.Run(() =>
-            {
-                return _dataService.ReturnAllBankAccounts().OrderBy(a => a.Money).ToList();
+                {
+                    return _service.ReturnAllBankAccounts().OrderBy(a => a.Money).ToList();
+                });
             }
-            );
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
         }
 
 
-        public static async Task<List<BankAccount>>? ReturnAllUsersReverseSortedOnSaldo()
+        public async Task<List<BankAccount>>? ReturnAllUsersReverseSortedOnSaldo()
         {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
             try
             {
                 return await Task.Run(() =>
-            {
-                return _dataService.ReturnAllBankAccounts().OrderByDescending(a => a.Money).ToList();
+                {
+                    return _service.ReturnAllBankAccounts().OrderByDescending(a => a.Money).ToList();
+                });
             }
-            );
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
         }
 
-        public static async Task<List<BankAccount>>? ReturnAllUsersSortedOnDateOfCreation()
+        public async Task<List<BankAccount>>? ReturnAllUsersSortedOnDateOfCreation()
         {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
             try
             {
                 return await Task.Run(() =>
-            {
-                return _dataService.ReturnAllBankAccounts().OrderBy(a => a.dateofcreation).ToList();
+                {
+                    return _service.ReturnAllBankAccounts().OrderBy(a => a.DateOfCreation).ToList();
+                });
             }
-            );
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
         }
 
 
-        public static async Task<List<BankAccount>>? ReturnAllUsersReverseSortedOnDateOfCreation()
+        public async Task<List<BankAccount>>? ReturnAllUsersReverseSortedOnDateOfCreation()
         {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
             try
             {
                 return await Task.Run(() =>
-            {
-                return _dataService.ReturnAllBankAccounts().OrderByDescending(a => a.dateofcreation).ToList();
+                {
+                    return _service.ReturnAllBankAccounts().OrderByDescending(a => a.DateOfCreation).ToList();
+                });
             }
-            );
-            }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowIncorrectValueErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
-#pragma warning disable CS0168 // Variable is declared but never used
             catch (Exception ex)
-#pragma warning restore CS0168 // Variable is declared but never used
             {
                 GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-#pragma warning disable CS8603 // Possible null reference return.
                 return null;
-#pragma warning restore CS8603 // Possible null reference return.
             }
         }
-#nullable disable
-        //<summary>
-        //added code end
-        //<summary>
-        public static async Task<bool> SpendMoney(BankAccount account,BankAccount opossiteaccount,  decimal money, bool subscription = false, string reason = "")
-        {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
 
+        public async Task<bool> SpendMoney(BankAccount account, decimal money, bool subscription = false, string reason = "")
+        {
             if (money < 0)
             {
                 return false;
             }
 
-            Transaction transaction = new Transaction { Account = account, InteractedAccount = opossiteaccount,Amount = -money, Reason = reason, MayExecuteMore = subscription , Id = Guid.NewGuid().ToString(), dummytransaction = false, LastExecuted = DateTime.Now};
+            Transaction transaction = new Transaction { Id = Guid.NewGuid().ToString(), Account = account, Amount = -money, Reason = reason, MayExecuteMore = subscription, LastExecuted = DateTime.Now};
             transaction.TransactionLog += account.Log;
 
             account.TransactionQueue.Add(transaction);
@@ -614,56 +407,11 @@ namespace DeBank.Library.Logic
 
             account.PreviousTransactions.Add(transaction);
 
-            //<summary>
-            //added code start
-            //<summary>
-            _dataService.AddTransaction(transaction);
-            _dataService.UpdateBank(account);
-            var UserSuperAccount = _dataService.ReturnAllUsers().Where(a => a.Accounts.Where(a => a.Id == account.Id).Any()).FirstOrDefault();
-            _dataService.UpdateUser(UserSuperAccount);
-            //<summary>
-            //added code end
-            //<summary>
-
             return result;
         }
 
-        public static async Task<bool> SpendMoney(BankAccount account, decimal money, bool subscription = false, string reason = "")
+        public async Task<bool> TransferMoney(BankAccount account1, BankAccount account2, decimal money, string reason = "")
         {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
-
-            if (money < 0)
-            {
-                return false;
-            }
-
-            Transaction transaction = new Transaction { Account = account, Amount = -money, Reason = reason, MayExecuteMore = subscription, Id = Guid.NewGuid().ToString(), dummytransaction = false, LastExecuted = DateTime.Now };
-            transaction.TransactionLog += account.Log;
-
-            account.TransactionQueue.Add(transaction);
-            bool result = await transaction.Queue();
-            account.TransactionQueue.Remove(transaction);
-
-            account.PreviousTransactions.Add(transaction);
-
-            //<summary>
-            //added code start
-            //<summary>
-            _dataService.AddTransaction(transaction);
-            _dataService.UpdateBank(account);
-            var UserSuperAccount = _dataService.ReturnAllUsers().Where(a => a.Accounts.Where(a => a.Id == account.Id).Any()).FirstOrDefault();
-            _dataService.UpdateUser(UserSuperAccount);
-            //<summary>
-            //added code end
-            //<summary>
-
-            return result;
-        }
-
-        public static async Task<bool> TransferMoney(BankAccount account1, BankAccount account2, decimal money, string reason = "")
-        {
-            Interfaces.IDataService _dataService = DataService.GetDataService();
-
             if (money < 0)
             {
                 return false;

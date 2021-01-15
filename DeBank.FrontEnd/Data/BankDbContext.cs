@@ -1,8 +1,7 @@
-﻿using DeBank.Library.Logic;
-using DeBank.Library.Models;
+﻿using DeBank.Library.Models;
 using System.Data.Entity;
 
-namespace DeBank.Library
+namespace DeBank.FrontEnd.Data
 {
     public class BankDbContext : DbContext
     {
@@ -16,8 +15,7 @@ namespace DeBank.Library
             }
             return _dbContext;
         }
+
         public DbSet<User> Users { get; set; }
-        public DbSet<BankAccount> BankAccounts { get; set; }
-        public DbSet<Transaction> Transactions { get; set; }
     }
 }

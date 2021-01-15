@@ -6,15 +6,14 @@ using DeBankWebApp.ViewModels;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using DeBank.Library.Logic;
 
 namespace DeBankWebApp.Controllers
 {
     public class RegularUserMoneyMutation : Controller
     {
-        IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+        IDataService _dataService = MockingData.GetMockDataService();
 
         // GET: RegularUserMoneyMutation
         public ActionResult TransferMoney(string id)
@@ -31,7 +30,7 @@ namespace DeBankWebApp.Controllers
 
         // GET: RegularUserMoneyMutation/Details/5
         [HttpPost]
-        public async Task<IActionResult> TransferMoney(DeBank.Library.Logic.Transaction transaction)
+        public async Task<IActionResult> TransferMoney(Transaction transaction)
         {
             if (_dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).Any())
             {
@@ -44,6 +43,10 @@ namespace DeBankWebApp.Controllers
                 GeneralMethods.ShowUserNotFoundMessage();
                 return View();
             }
+            BankLogic bank = WebBankLogic.GetBankLogic();
+
+            await bank.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
+            return View();
         }
 
 
