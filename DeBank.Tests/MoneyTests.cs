@@ -96,7 +96,7 @@ namespace DeBank.Tests
                   }
                 }
             };
-            NUnit.Framework.Assert.DoesNotThrowAsync(async() => await _logic.ReturnTransactionsWithinTimeFrame(account, 100, NumberEnums.Positive));
+            NUnit.Framework.Assert.DoesNotThrowAsync(async() => await BankLogic.ReturnTransactionsWithinTimeFrame(account, 100, NumberEnums.Positive));
 
         }
 

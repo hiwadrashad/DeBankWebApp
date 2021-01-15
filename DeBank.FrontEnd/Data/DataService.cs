@@ -75,6 +75,8 @@ namespace DeBank.FrontEnd.Data
 
         //public BankAccount ReturnBankAccount(string id)
         //{
+
+        //    return _dbContext.Users.Where(a => a.Id == id).FirstOrDefault();
         //    return _dbContext.BankAccounts.Where(a => a.Id == id).FirstOrDefault();
         //}
 
