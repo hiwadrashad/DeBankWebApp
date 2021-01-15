@@ -22,7 +22,6 @@ namespace DeBankWebApp.Controllers
                 Id = Guid.NewGuid().ToString(),
                 dateofcreation = DateTime.Now,
                 dummyaccount = false,
-                IBAN = IBAN.IBAN.GenerateIBANNumber(),
                 Owner = StaticResources.CurrentUser.currentuser,
             };
             return View(account);
@@ -35,9 +34,9 @@ namespace DeBankWebApp.Controllers
         {
             try
             {
-                IbanNet.Builders.IbanBuilder builder = new IbanNet.Builders.IbanBuilder();
-                var IBANNumber = builder.Build();
-                account.IBAN = IBANNumber;
+                //IbanNet.Builders.IbanBuilder builder = new IbanNet.Builders.IbanBuilder();
+                //var IBANNumber = builder.Build();
+                //account.IBAN = IBANNumber;
                 _dataService.AddBankaccounts(account);
                 var item = StaticResources.CurrentUser.currentuser;
                 item.Accounts.Add(account);
