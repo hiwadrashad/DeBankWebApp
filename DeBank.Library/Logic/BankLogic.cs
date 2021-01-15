@@ -155,7 +155,7 @@ namespace DeBank.Library.Logic
             }
         }
 #nullable enable
-        public static async Task<List<Logic.Transaction>>? ReturnTransactionsWithinTimeFrame(BankAccount user, int timeinseconds, Enums.PositiveNegativeOrAllTransactions positivenegativeornotransactioncheck)
+        public static async Task<List<Logic.Transaction>>? ReturnTransactionsWithinTimeFrame(BankAccount user, int timeinseconds, DeBank.Library.Logic.NumberEnums positivenegativeornotransactioncheck)
         {
             try
             {
@@ -163,7 +163,7 @@ namespace DeBank.Library.Logic
                 {
                     var date = DateTime.Now.AddSeconds(-timeinseconds);
                     var item = user.PreviousTransactions.Where(a => a.LastExecuted > date).ToList();
-                    if (positivenegativeornotransactioncheck == Enums.PositiveNegativeOrAllTransactions.Positive)
+                    if (positivenegativeornotransactioncheck == NumberEnums.Positive)
                     {
                         return item.Where(a => a.Amount > 0).ToList();
                     }
