@@ -61,7 +61,7 @@ namespace DeBank.Library.DAL
          {
           Id = Guid.NewGuid().ToString(),
           DateOfCreation = DateTime.Now,
-          IBAN = Library.IBAN.IBAN.GenerateIBANNumber(),
+          //IBAN = Library.IBAN.IBAN.GenerateIBANNumber(),
           info = new Information()
          {
           Addition = "Test",
@@ -82,7 +82,7 @@ namespace DeBank.Library.DAL
          {
           Id = Guid.NewGuid().ToString(),
           DateOfCreation = DateTime.Now,
-          IBAN = Library.IBAN.IBAN.GenerateIBANNumber(),
+          //IBAN = Library.IBAN.IBAN.GenerateIBANNumber(),
           info = new Information()
          {
           Addition = "Test",

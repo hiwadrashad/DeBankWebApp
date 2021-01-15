@@ -9,16 +9,16 @@ namespace DeBankWebApp.Data
 {
     public class ApplicationDbContext : IdentityDbContext
     {
-        private static DbContextOptions _options;
+        private static DbContextOptions<ApplicationDbContext> _options;
 
-        public ApplicationDbContext(DbContextOptions options) : base(options)
+        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
         {
             _options = options;
         }
 
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> option) : base(option)
-        {        
-        }
+        //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> option) : base(option)
+        //{
+        //}
 
         private static ApplicationDbContext _dbContext;
 

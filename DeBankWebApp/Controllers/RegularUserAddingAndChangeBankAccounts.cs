@@ -21,7 +21,7 @@ namespace DeBankWebApp.Controllers
             {
                 Id = Guid.NewGuid().ToString(),
                 DateOfCreation = DateTime.Now,
-                IBAN = IBAN.IBAN.GenerateIBANNumber(),
+                //IBAN = IBAN.IBAN.GenerateIBANNumber(),
                 Owner = StaticResources.CurrentUser.currentuser,
             };
             return View(account);

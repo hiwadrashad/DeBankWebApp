@@ -159,7 +159,7 @@ namespace DeBank.Library.Logic
                 {
                     var date = DateTime.Now.AddSeconds(-timeinseconds);
                     var item = user.PreviousTransactions.Where(a => a.LastExecuted > date).ToList();
-                    if (positivenegativeornotransactioncheck == NumberEnums.Positive)
+                    if (numberEnum == NumberEnums.Positive)
                     {
                         return item.Where(a => a.Amount > 0).ToList();
                     }
