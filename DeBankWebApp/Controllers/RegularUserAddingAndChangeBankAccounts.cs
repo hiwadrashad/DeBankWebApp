@@ -19,13 +19,13 @@ namespace DeBankWebApp.Controllers
         [Authorize]
         public ActionResult GenerateBankAccount()
         {
-            BankAccount account = new BankAccount()
-            {
-                Id = Guid.NewGuid().ToString(),
-                DateOfCreation = DateTime.Now,
+            BankAccount account = new BankAccount();
+            //{
+            //    Id = Guid.NewGuid().ToString(),
+            //    DateOfCreation = DateTime.Now,
                 //IBAN = IBAN.IBAN.GenerateIBANNumber(),
-                Owner = StaticResources.CurrentUser.currentuser,
-            };
+            //    Owner = StaticResources.CurrentUser.currentuser,
+            //};
             return View(account);
         }
 
@@ -34,22 +34,25 @@ namespace DeBankWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GenerateBankAccount(BankAccount account)
         {
-            //try
-            //{
+            try
+            {
                 var item = StaticResources.CurrentUser.currentuser;
                 account.Id = Guid.NewGuid().ToString();
                 account.DateOfCreation = DateTime.Now;
                 account.Owner = StaticResources.CurrentUser.currentuser;
+            if (item.Accounts == null)
+            {
                 item.Accounts = new List<BankAccount>();
+            }
                 item.Accounts.Add(account);
                 _dataService.UpdateUser(item);
                 _dataService.AddBankaccounts(account);
                 return RedirectToAction("SubAccountsOverview", "RegularUserOverview");
-            //}
-            //catch
-            //{
-            //    return View();
-            //}
+            }
+            catch
+            {
+                return View();
+            }
         }
 
         [Authorize]

@@ -72,7 +72,7 @@ namespace DeBankWebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Home}/{id?}");
+                    pattern: "{controller=RegularUserMoneyMutation}/{action=PaypalTransfer}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

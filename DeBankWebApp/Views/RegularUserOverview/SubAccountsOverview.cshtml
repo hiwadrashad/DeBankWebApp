@@ -3,13 +3,49 @@
 @{
     ViewData["Title"] = "SubAccountsOverview";
 }
+<style>
 
+
+    .card {
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+        max-width: 300px;
+        text-align: center;
+        float: left;
+    }
+
+    .title {
+        color: grey;
+        font-size: 18px;
+    }
+
+</style>
 <h1>SubAccountsOverview</h1>
 
 <p>
     
     <button type="button" class="btn btn-success" onclick="@("window.location.href='" + @Url.Action("GenerateBankAccount", "RegularUserAddingAndChangeBankAccounts") + "'");"  >Add bank account</button>
 </p>
+@if (Model != null)
+{
+    foreach (var item in Model)
+    { 
+<div class="card">
+    <h1>@Html.DisplayFor(modelItem => item.Name)</h1>
+    <p class="title">@Html.DisplayNameFor(model => model.Money)</p>
+    <p>@Html.DisplayFor(modelItem => item.Money)</p>
+    <p class="title">@Html.DisplayNameFor(model => model.Id)</p>
+    <p>@Html.DisplayFor(modelItem => item.Id)</p>
+    <p class="title">@Html.DisplayNameFor(model => model.DateOfCreation)</p>
+    <p>@Html.DisplayFor(modelItem => item.DateOfCreation)</p>
+    @Html.ActionLink("Edit data", "ChangeBankAccountData", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id })
+    @Html.ActionLink("Details account", "AccountDetails", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id }, null) 
+    @Html.ActionLink("Delete account", "RemoveBankAccount", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id })
+    @Html.ActionLink("See previous transactions", "TransactionsAndSaldoOverview", "RegularUserOverview", new { id = item.Id })
+    @Html.ActionLink("Transfer money", "TransferMoney", "RegularUserMoneyMutation", new { id = item.Id })
+    @Html.ActionLink("Pay", "Pay", "RegularUserMoneyMutation", new { id = item.Id })
+</div>
+    }
+}
 <table class="table">
     <thead>
         <tr>

@@ -1,2 +1,11 @@
-﻿<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
-<script>paypal.Buttons().render('body');</script>
+﻿<style>
+    .paypal {
+    transform: translate(150px,100px);
+    }
+    body {
+    overflow-x: hidden;
+    }
+</style>
+<script src="https://www.paypal.com/sdk/js?client-id=sb"></script>
+<script>paypal.Buttons().render('.paypal');</script>
+<div class="paypal"></div>

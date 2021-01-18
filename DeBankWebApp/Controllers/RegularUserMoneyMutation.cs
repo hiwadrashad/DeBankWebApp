@@ -33,6 +33,11 @@ namespace DeBankWebApp.Controllers
             return View(transaction);
         }
 
+        public ActionResult SuccesfullTrade()
+        {
+            return View();
+        }
+
         // GET: RegularUserMoneyMutation/Details/5
         [HttpPost]
         public async Task<IActionResult> TransferMoney(Transaction transaction)
@@ -44,7 +49,7 @@ namespace DeBankWebApp.Controllers
                 transaction.Account = StaticResources.CurrentUser.CurrentBankAccount;
                 transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).FirstOrDefault();
                 await bank.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
-                return View();
+                return RedirectToAction("SuccesfullTrade", "RegularUserMoneyMutation");
             }
             else
             {
