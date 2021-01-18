@@ -24,11 +24,12 @@ namespace DeBankWebApp.Controllers
         public ActionResult TransferMoney(string id)
         {
             Transaction transaction = new Transaction();
-            transaction = new Transaction()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Account = _dataService.ReturnBankAccount(id)
-            };
+            StaticResources.CurrentUser.CurrentBankAccount = _dataService.ReturnBankAccount(id);
+            //transaction = new Transaction()
+            //{
+            //    Id = Guid.NewGuid().ToString(),
+            //    Account = _dataService.ReturnBankAccount(id)
+            //};
             return View(transaction);
         }
 
@@ -37,9 +38,11 @@ namespace DeBankWebApp.Controllers
         public async Task<IActionResult> TransferMoney(Transaction transaction)
         {
             BankLogic bank = WebBankLogic.GetBankLogic();
-            if (_dataService.ReturnAllBankAccounts().Where(a => a.IBAN == transaction.InteractedAccount.IBAN).Any())
+            if (_dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).Any())
             {
-                transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.IBAN == transaction.InteractedAccount.IBAN).FirstOrDefault();
+                transaction.Id = Guid.NewGuid().ToString();
+                transaction.Account = StaticResources.CurrentUser.CurrentBankAccount;
+                transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).FirstOrDefault();
                 await bank.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
                 return View();
             }
@@ -57,11 +60,7 @@ namespace DeBankWebApp.Controllers
         public ActionResult Pay(string id)
         {
             Transaction transaction = new Transaction();
-            transaction = new Transaction()
-            {
-                Id = Guid.NewGuid().ToString(),
-                Account = _dataService.ReturnBankAccount(id),
-            };
+            StaticResources.CurrentUser.CurrentBankAccount = _dataService.ReturnBankAccount(id);
             return View(transaction);
         }
 
@@ -82,6 +81,8 @@ namespace DeBankWebApp.Controllers
             {
                 if (IBAN.IBAN.ValidateIBAN(transaction.InteractedAccount.IBAN))
                 {
+                    transaction.Id = Guid.NewGuid().ToString();
+                    transaction.Account = StaticResources.CurrentUser.CurrentBankAccount;
                     TempData["IBAN"] = transaction.InteractedAccount.IBAN;
                     return RedirectToAction("PaypalTransfer", "RegularUserMoneyMutation");
                 }
