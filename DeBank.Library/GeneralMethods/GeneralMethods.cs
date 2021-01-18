@@ -1,8 +1,10 @@
-﻿using System;
+﻿using DeBank.Library.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
+using Microsoft.AspNetCore.Identity;
 
 namespace DeBank.Library.GeneralMethods
 {
@@ -23,8 +25,14 @@ namespace DeBank.Library.GeneralMethods
     }
 
 
-    public static class GeneralMethods
+    public class GeneralMethods
     {
+        //public static User? ReturnUserFromidentity()
+        //{ 
+        //    User.Identity
+        // //Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _userManager;
+        //   bool val1 = Request
+        //}
         public static IEnumerable<T> CreateEnumerable<T>(params T[] items)
         {
             if (items == null)
@@ -60,5 +68,7 @@ namespace DeBank.Library.GeneralMethods
             // write messagebox dependant on front end platform
             //<summary>
         }
+
+
     }
 }

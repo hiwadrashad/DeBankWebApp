@@ -2,12 +2,14 @@
 using DeBank.Library.GeneralMethods;
 using DeBank.Library.Models;
 using DeBankWebApp.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace DeBankWebApp.Controllers
 {
@@ -15,6 +17,7 @@ namespace DeBankWebApp.Controllers
     {
         IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
         // GET: RegularUserOverview
+        [Authorize]
         public ActionResult SubAccountsOverview()
         {
             //<summary>
@@ -51,8 +54,10 @@ namespace DeBankWebApp.Controllers
             return View(StaticResources.CurrentUser.currentuser.Accounts);
         }
 
+   
+        [Authorize]
         public ActionResult TransactionsAndSaldoOverview(string id)
-        { 
+        {
             //<summary>
             // mockingdata
             //<summary>
@@ -81,8 +86,11 @@ namespace DeBankWebApp.Controllers
             //    }
             //    }
             //};
-
-            return View(_dataService.ReturnBankAccount(id).PreviousTransactions);
+            if (_dataService.ReturnBankAccount(id).PreviousTransactions == null)
+            {
+                _dataService.ReturnBankAccount(id).PreviousTransactions = new List<DeBank.Library.Logic.Transaction>();
+            }
+            return View(_dataService.ReturnBankAccount(id));
         }
     }
 }

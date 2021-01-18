@@ -10,6 +10,7 @@ using System.Linq;
 using DeBank.Library.Logic;
 using System.Linq;
 using DeBankWebApp.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DeBankWebApp.Controllers
 {
@@ -18,6 +19,8 @@ namespace DeBankWebApp.Controllers
         IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
 
         // GET: RegularUserMoneyMutation
+        [Authorize]
+
         public ActionResult TransferMoney(string id)
         {
             Transaction transaction = new Transaction();
@@ -49,6 +52,8 @@ namespace DeBankWebApp.Controllers
 
 
         // GET: RegularUserMoneyMutation/Edit/5
+        [Authorize]
+
         public ActionResult Pay(string id)
         {
             Transaction transaction = new Transaction();
@@ -59,6 +64,8 @@ namespace DeBankWebApp.Controllers
             };
             return View(transaction);
         }
+
+        [Authorize]
 
         public ActionResult PaypalTransfer()
         {

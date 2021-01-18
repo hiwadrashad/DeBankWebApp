@@ -2,6 +2,7 @@
 using DeBank.Library.GeneralMethods;
 using DeBank.Library.Models;
 using DeBankWebApp.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -15,6 +16,7 @@ namespace DeBankWebApp.Controllers
     {
         DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
         // GET: RegularUserAddingBankAccounts/Create
+        [Authorize]
         public ActionResult GenerateBankAccount()
         {
             BankAccount account = new BankAccount()
@@ -32,23 +34,32 @@ namespace DeBankWebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult GenerateBankAccount(BankAccount account)
         {
-            try
-            {
+            //try
+            //{
                 var item = StaticResources.CurrentUser.currentuser;
+                account.Id = Guid.NewGuid().ToString();
+                account.DateOfCreation = DateTime.Now;
+                account.Owner = StaticResources.CurrentUser.currentuser;
+                item.Accounts = new List<BankAccount>();
                 item.Accounts.Add(account);
                 _dataService.UpdateUser(item);
+                _dataService.AddBankaccounts(account);
                 return RedirectToAction("SubAccountsOverview", "RegularUserOverview");
-            }
-            catch
-            {
-                return View();
-            }
+            //}
+            //catch
+            //{
+            //    return View();
+            //}
         }
+
+        [Authorize]
 
         public ActionResult AccountDetails(string id)
         {
             return View(_dataService.ReturnBankAccount(id));
         }
+
+        [Authorize]
 
         // GET: RegularUserAddingBankAccounts/Edit/5
         public ActionResult ChangeBankAccountData(string id)
@@ -77,6 +88,7 @@ namespace DeBankWebApp.Controllers
         }
 
         // GET: RegularUserAddingBankAccounts/Delete/5
+        [Authorize]
         public ActionResult RemoveBankAccount(string id)
         {
             return View(_dataService.ReturnBankAccount(id));

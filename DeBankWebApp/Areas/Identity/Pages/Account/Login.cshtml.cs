@@ -22,6 +22,8 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
         private readonly SignInManager<IdentityUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
 
+       
+
         public LoginModel(SignInManager<IdentityUser> signInManager, 
             ILogger<LoginModel> logger,
             UserManager<IdentityUser> userManager)
@@ -70,6 +72,16 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
 
             ReturnUrl = returnUrl;
+        }
+
+        public void AssignStaticresources()
+        {
+ 
+            DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+   
+                StaticResources.CurrentUser.currentuser = _dataService.ReturnAllUsers().Where(a => a.Name == Input.Email && a.Password == Input.Password).FirstOrDefault();
+
+
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

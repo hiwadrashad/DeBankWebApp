@@ -7,7 +7,8 @@
 <h1>SubAccountsOverview</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    
+    <button type="button" class="btn btn-success" onclick="@("window.location.href='" + @Url.Action("GenerateBankAccount", "RegularUserAddingAndChangeBankAccounts") + "'");"  >Add bank account</button>
 </p>
 <table class="table">
     <thead>
@@ -47,7 +48,7 @@
             </td>
             <td>
                 @Html.ActionLink("Edit data", "ChangeBankAccountData", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id }) |
-                @Html.ActionLink("Details account", "AccountDetails", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id }) |
+                @Html.ActionLink("Details account", "AccountDetails", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id },null) |
                 @Html.ActionLink("Delete account", "RemoveBankAccount", "RegularUserAddingAndChangeBankAccounts", new { id = item.Id })
                 @Html.ActionLink("See previous transactions", "TransactionsAndSaldoOverview", "RegularUserOverview", new { id = item.Id })
                 @Html.ActionLink("Transfer money", "TransferMoney", "RegularUserMoneyMutation", new { id = item.Id })
