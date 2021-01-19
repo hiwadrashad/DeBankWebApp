@@ -42,18 +42,42 @@ namespace DeBankWebApp.Controllers
         [HttpPost]
         public async Task<IActionResult> TransferMoney(Transaction transaction)
         {
-            BankLogic bank = WebBankLogic.GetBankLogic();
-            if (_dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).Any())
+            try
             {
-                transaction.Id = Guid.NewGuid().ToString();
-                transaction.Account = StaticResources.CurrentUser.CurrentBankAccount;
-                transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).FirstOrDefault();
-                await bank.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
-                return RedirectToAction("SuccesfullTrade", "RegularUserMoneyMutation");
+                BankLogic bank = WebBankLogic.GetBankLogic();
+                if (_dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).Any())
+                {
+                    transaction.Id = Guid.NewGuid().ToString();
+                    transaction.Account = StaticResources.CurrentUser.CurrentBankAccount;
+                    transaction.InteractedAccount = _dataService.ReturnAllBankAccounts().Where(a => a.Id == transaction.InteractedAccount.Id).FirstOrDefault();
+                    await bank.TransferMoney(transaction.Account, transaction.InteractedAccount, transaction.Amount);
+                    return RedirectToAction("SuccesfullTrade", "RegularUserMoneyMutation");
+                }
+                else
+                {
+                    ViewBag.Message = "User was not found";
+                    return View();
+                }
             }
-            else
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (NullReferenceException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
-                GeneralMethods.ShowUserNotFoundMessage();
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (ArgumentNullException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Something went wrong, try again";
                 return View();
             }
         }
@@ -93,13 +117,30 @@ namespace DeBankWebApp.Controllers
                 }
                 else
                 {
-                    GeneralMethods.ShowUserNotFoundMessage();
+                    ViewBag.Message = "User was not found";
                     return View();
                 }
                 //BankLogic.SpendMoney();
             }
-            catch
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (NullReferenceException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (ArgumentNullException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Something went wrong, try again";
                 return View();
             }
         }

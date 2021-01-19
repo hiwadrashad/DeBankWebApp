@@ -40,17 +40,34 @@ namespace DeBankWebApp.Controllers
                 account.Id = Guid.NewGuid().ToString();
                 account.DateOfCreation = DateTime.Now;
                 account.Owner = StaticResources.CurrentUser.currentuser;
-            if (item.Accounts == null)
-            {
-                item.Accounts = new List<BankAccount>();
-            }
+                if (item.Accounts == null)
+                {
+                    item.Accounts = new List<BankAccount>();
+                }
                 item.Accounts.Add(account);
                 _dataService.UpdateUser(item);
                 _dataService.AddBankaccounts(account);
                 return RedirectToAction("SubAccountsOverview", "RegularUserOverview");
             }
-            catch
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (NullReferenceException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (ArgumentNullException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Something went wrong, try again";
                 return View();
             }
         }
@@ -84,8 +101,25 @@ namespace DeBankWebApp.Controllers
 
                 return RedirectToAction("SubAccountsOverview", "RegularUserOverview");
             }
-            catch
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (NullReferenceException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (ArgumentNullException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Something went wrong, try again";
                 return View();
             }
         }
@@ -117,8 +151,25 @@ namespace DeBankWebApp.Controllers
                 }
                 return RedirectToAction("SubAccountsOverview", "RegularUserOverview");
             }
-            catch
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (NullReferenceException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
             {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (ArgumentNullException ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Wrong value input, please try a valid value";
+                return View();
+            }
+#pragma warning disable CS0168 // Variable is declared but never used
+            catch (Exception ex)
+#pragma warning restore CS0168 // Variable is declared but never used
+            {
+                ViewBag.Message = "Something went wrong, try again";
                 return View();
             }
         }

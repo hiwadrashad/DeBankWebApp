@@ -59,8 +59,17 @@
             @Html.DisplayFor(model => model.info.Telephonenumber)
         </dd>
     </dl>
-    
+
     <form asp-action="RemoveBankAccount">
         <input type="submit" value="Delete" class="btn btn-danger" /> |
     </form>
 </div>
+@if (ViewBag.Message != null)
+{
+    <script type="text/javascript">
+    window.onload = function ()
+    {
+        alert("@ViewBag.Message")
+    }
+    </script>
+}
