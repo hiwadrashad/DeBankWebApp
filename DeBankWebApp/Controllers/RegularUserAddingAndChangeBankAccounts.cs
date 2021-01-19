@@ -37,6 +37,8 @@ namespace DeBankWebApp.Controllers
             //};
             return View(account);
         }
+        [Authorize]
+
         public IActionResult AssignRole()
         {
             AdminInvocation item = new AdminInvocation();
@@ -57,16 +59,18 @@ namespace DeBankWebApp.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public IActionResult ShowCurrentUpgradeCode()
         {
             ViewBag.Code = _dataService.ReturnAdminCode();
             return View();
         }
+        [Authorize]
         public IActionResult FailedAdminAssertion()
         {
             return View();
         }
-
+        [Authorize]
         public IActionResult SuccesfullAdminAsertion()
         {
             return View();

@@ -33,6 +33,7 @@ namespace DeBankWebApp.Controllers
             return View(transaction);
         }
 
+        [Authorize]
         public IActionResult SuccesfullTrade()
         {
             return View();
