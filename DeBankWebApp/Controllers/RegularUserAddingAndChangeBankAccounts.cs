@@ -2,8 +2,10 @@
 using DeBank.Library.GeneralMethods;
 using DeBank.Library.Models;
 using DeBankWebApp.Data;
+using DeBankWebApp.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -15,9 +17,16 @@ namespace DeBankWebApp.Controllers
     public class RegularUserAddingAndChangeBankAccounts : Controller
     {
         DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly SignInManager<IdentityUser> _signInManager;
+        public RegularUserAddingAndChangeBankAccounts(UserManager<IdentityUser> userManager , SignInManager<IdentityUser> signInManager)
+        {
+            this._userManager = userManager;
+            this._signInManager = signInManager;
+        }
         // GET: RegularUserAddingBankAccounts/Create
         [Authorize]
-        public ActionResult GenerateBankAccount()
+        public IActionResult GenerateBankAccount()
         {
             BankAccount account = new BankAccount();
             //{
@@ -28,11 +37,45 @@ namespace DeBankWebApp.Controllers
             //};
             return View(account);
         }
+        public IActionResult AssignRole()
+        {
+            AdminInvocation item = new AdminInvocation();
+            return View(item);
+        }
+        [HttpPost]
+        public async Task<IActionResult> AssignRole(AdminInvocation inputcode)
+        {
+            if (inputcode.Input == _dataService.ReturnAdminCode())
+            {
+                IdentityUser item = await _userManager.FindByNameAsync(User.Identity.Name);
+                await _userManager.AddToRoleAsync(item, "Admin");
+                return RedirectToAction("SuccesfullAdminAsertion", "RegularUserAddingAndChangeBankAccounts");
+            }
+            else
+            {
+                return RedirectToAction("FailedAdminAssertion", "RegularUserAddingAndChangeBankAccounts");
+            }
+        }
+
+        public IActionResult ShowCurrentUpgradeCode()
+        {
+            ViewBag.Code = _dataService.ReturnAdminCode();
+            return View();
+        }
+        public IActionResult FailedAdminAssertion()
+        {
+            return View();
+        }
+
+        public IActionResult SuccesfullAdminAsertion()
+        {
+            return View();
+        }
 
         // POST: RegularUserAddingBankAccounts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult GenerateBankAccount(BankAccount account)
+        public IActionResult GenerateBankAccount(BankAccount account)
         {
             try
             {
@@ -74,7 +117,7 @@ namespace DeBankWebApp.Controllers
 
         [Authorize]
 
-        public ActionResult AccountDetails(string id)
+        public IActionResult AccountDetails(string id)
         {
             return View(_dataService.ReturnBankAccount(id));
         }
@@ -82,7 +125,7 @@ namespace DeBankWebApp.Controllers
         [Authorize]
 
         // GET: RegularUserAddingBankAccounts/Edit/5
-        public ActionResult ChangeBankAccountData(string id)
+        public IActionResult ChangeBankAccountData(string id)
         {
             return View(_dataService.ReturnBankAccount(id));
         }
@@ -90,7 +133,7 @@ namespace DeBankWebApp.Controllers
         // POST: RegularUserAddingBankAccounts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ChangeBankAccountData(BankAccount account)
+        public IActionResult ChangeBankAccountData(BankAccount account)
         {
             try
             {
@@ -126,7 +169,7 @@ namespace DeBankWebApp.Controllers
 
         // GET: RegularUserAddingBankAccounts/Delete/5
         [Authorize]
-        public ActionResult RemoveBankAccount(string id)
+        public IActionResult RemoveBankAccount(string id)
         {
             return View(_dataService.ReturnBankAccount(id));
         }
@@ -134,7 +177,7 @@ namespace DeBankWebApp.Controllers
         // POST: RegularUserAddingBankAccounts/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult RemoveBankAccount(BankAccount account)
+        public IActionResult RemoveBankAccount(BankAccount account)
         {
             try
             {

@@ -21,7 +21,7 @@ namespace DeBankWebApp.Controllers
         // GET: RegularUserMoneyMutation
         [Authorize]
 
-        public ActionResult TransferMoney(string id)
+        public IActionResult TransferMoney(string id)
         {
             Transaction transaction = new Transaction();
             StaticResources.CurrentUser.CurrentBankAccount = _dataService.ReturnBankAccount(id);
@@ -33,7 +33,7 @@ namespace DeBankWebApp.Controllers
             return View(transaction);
         }
 
-        public ActionResult SuccesfullTrade()
+        public IActionResult SuccesfullTrade()
         {
             return View();
         }
@@ -86,7 +86,7 @@ namespace DeBankWebApp.Controllers
         // GET: RegularUserMoneyMutation/Edit/5
         [Authorize]
 
-        public ActionResult Pay(string id)
+        public IActionResult Pay(string id)
         {
             Transaction transaction = new Transaction();
             StaticResources.CurrentUser.CurrentBankAccount = _dataService.ReturnBankAccount(id);
@@ -95,7 +95,7 @@ namespace DeBankWebApp.Controllers
 
         [Authorize]
 
-        public ActionResult PaypalTransfer()
+        public IActionResult PaypalTransfer()
         {
             TempData["IBANcarryover"] = TempData["IBAN"];
             return View();
@@ -104,7 +104,7 @@ namespace DeBankWebApp.Controllers
         // POST: RegularUserMoneyMutation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Pay(Transaction transaction)
+        public IActionResult Pay(Transaction transaction)
         {
             try
             {

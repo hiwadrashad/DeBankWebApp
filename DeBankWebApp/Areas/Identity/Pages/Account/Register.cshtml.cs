@@ -6,6 +6,8 @@ using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using DeBank.Library.DAL;
+using DeBankWebApp.Data;
+using DeBankWebApp.ViewModels;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -47,6 +49,7 @@ namespace DeBankWebApp.Areas.Identity.Pages.Account
 
         public class InputModel
         {
+
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]

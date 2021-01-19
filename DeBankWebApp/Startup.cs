@@ -26,9 +26,12 @@ namespace DeBankWebApp
 {
     public class Startup
     {
+        DeBank.Library.DAL.MockingData _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+            _dataService.GenerateAdminUpgradeCode();
         }
 
         public IConfiguration Configuration { get; }
@@ -72,7 +75,7 @@ namespace DeBankWebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=RegularUserMoneyMutation}/{action=PaypalTransfer}/{id?}");
+                    pattern: "{controller=RegularUserAddingAndChangeBankAccounts}/{action=FailedAdminAssertion}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

@@ -12,10 +12,12 @@ namespace DeBank.Library.DAL
         private List<User> _users;
         private List<BankAccount> _bankaccounts;
         private List<Transaction> _transactions;
+        private string _currentAdminUpgradeCode;
 
         private static MockingData _MockingdataService;
 
         public string IBAN { get; private set; }
+
 
         private MockingData()
         {
@@ -114,6 +116,15 @@ namespace DeBank.Library.DAL
                Reason = "Test"
               }
             };
+        }
+        public void GenerateAdminUpgradeCode()
+        {
+            _currentAdminUpgradeCode = Guid.NewGuid().ToString();
+        }
+
+        public string ReturnAdminCode()
+        {
+            return _currentAdminUpgradeCode;
         }
         public bool AddUser(User user)
         {

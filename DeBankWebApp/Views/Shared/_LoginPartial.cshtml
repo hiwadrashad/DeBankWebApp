@@ -14,8 +14,20 @@
             </form>
         </li>
         <li class="nav-item">
-            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login"  title="Manage">Log in to go to main page</a>
+            <a class="nav-link" asp-area="Identity" asp-page="/Account/Login" title="Manage">Log in to go to main page</a>
         </li>
+        @if (User.IsInRole("Admin"))
+        {
+            <li class="nav-item">
+                <a class="nav-link" onclick="@("window.location.href='" + @Url.Action("GenerateBankAccount", "RegularUserAddingAndChangeBankAccounts") + "'");" title="Manage">See approval code</a>
+            </li>
+        }
+        else
+        {
+            <li class="nav-item">
+                <a class="nav-link" onclick="@("window.location.href='" + @Url.Action("AssignRole", "RegularUserAddingAndChangeBankAccounts") + "'");" title="Manage">Fill in account admin code</a>
+            </li>
+        }
     }
     else
     {

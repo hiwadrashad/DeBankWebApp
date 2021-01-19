@@ -50,13 +50,16 @@ namespace DeBankWebApp.Controllers
             //};
 
             //StaticResources.CurrentUser.currentuser = mockuser;
-
+            //if (this.User.Identity.IsAuthenticated && StaticResources.CurrentUser.currentuser.Accounts == null)
+            //{
+            //    StaticResources.CurrentUser.currentuser = _dataService.ReturnAllUsers().Where(a => a.Name == this.User.Identity.Name).FirstOrDefault();
+            //}
             return View(StaticResources.CurrentUser.currentuser.Accounts);
         }
 
    
         [Authorize]
-        public ActionResult TransactionsAndSaldoOverview(string id)
+        public IActionResult TransactionsAndSaldoOverview(string id)
         {
             //<summary>
             // mockingdata
