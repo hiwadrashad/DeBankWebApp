@@ -21,6 +21,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using DeBank.Library.DAL;
+using Newtonsoft.Json;
 
 namespace DeBankWebApp
 {
@@ -30,6 +31,11 @@ namespace DeBankWebApp
 
         public Startup(IConfiguration configuration)
         {
+            //JsonConvert.DefaultSettings = () => new JsonSerializerSettings
+            //{
+            //    Formatting = Newtonsoft.Json.Formatting.Indented,
+            //    ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            //};
             Configuration = configuration;
             _dataService.GenerateAdminUpgradeCode();
         }
@@ -75,7 +81,7 @@ namespace DeBankWebApp
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=RegularUserAddingAndChangeBankAccounts}/{action=FailedAdminAssertion}/{id?}");
+                    pattern: "{controller=Home}/{action=Home}/{id?}");
                 endpoints.MapRazorPages();
             });
         }

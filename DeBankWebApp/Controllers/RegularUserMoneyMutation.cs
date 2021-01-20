@@ -11,6 +11,9 @@ using DeBank.Library.Logic;
 using System.Linq;
 using DeBankWebApp.Data;
 using Microsoft.AspNetCore.Authorization;
+using System.Net;
+using System.IO;
+using System.Text;
 
 namespace DeBankWebApp.Controllers
 {
@@ -98,7 +101,9 @@ namespace DeBankWebApp.Controllers
 
         public IActionResult PaypalTransfer()
         {
-            TempData["IBANcarryover"] = TempData["IBAN"];
+            //TempData.Put("carryoverkey", TempData.Get<Transaction>("key"));
+            //IPN item = new IPN();
+            //item.Receive();
             return View();
         }
 
@@ -113,7 +118,7 @@ namespace DeBankWebApp.Controllers
                 {
                     transaction.Id = Guid.NewGuid().ToString();
                     transaction.Account = StaticResources.CurrentUser.CurrentBankAccount;
-                    TempData["IBAN"] = transaction.InteractedAccount.IBAN;
+                    //TempData.Put("key", transaction);
                     return RedirectToAction("PaypalTransfer", "RegularUserMoneyMutation");
                 }
                 else
@@ -121,29 +126,29 @@ namespace DeBankWebApp.Controllers
                     ViewBag.Message = "User was not found";
                     return View();
                 }
-                //BankLogic.SpendMoney();
-            }
+            //BankLogic.SpendMoney();
+        }
 #pragma warning disable CS0168 // Variable is declared but never used
             catch (NullReferenceException ex)
 #pragma warning restore CS0168 // Variable is declared but never used
             {
                 ViewBag.Message = "Wrong value input, please try a valid value";
                 return View();
-            }
+    }
 #pragma warning disable CS0168 // Variable is declared but never used
             catch (ArgumentNullException ex)
 #pragma warning restore CS0168 // Variable is declared but never used
             {
                 ViewBag.Message = "Wrong value input, please try a valid value";
                 return View();
-            }
+}
 #pragma warning disable CS0168 // Variable is declared but never used
-            catch (Exception ex)
+catch (Exception ex)
 #pragma warning restore CS0168 // Variable is declared but never used
-            {
-                ViewBag.Message = "Something went wrong, try again";
-                return View();
-            }
+{
+    ViewBag.Message = "Something went wrong, try again";
+    return View();
+}
         }
 
     }

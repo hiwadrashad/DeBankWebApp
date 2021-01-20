@@ -5,6 +5,8 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ViewFeatures;
+using Newtonsoft.Json;
 
 namespace DeBank.Library.GeneralMethods
 {
@@ -24,7 +26,20 @@ namespace DeBank.Library.GeneralMethods
         }
     }
 
+    public static class TempDataExtensions
+    {
+        public static void Put<T>(this ITempDataDictionary tempData, string key, T value) where T : class
+        {
+            tempData[key] = JsonConvert.SerializeObject(value);
+        }
 
+        public static T Get<T>(this ITempDataDictionary tempData, string key) where T : class
+        {
+            object o;
+            tempData.TryGetValue(key, out o);
+            return o == null ? null : JsonConvert.DeserializeObject<T>((string)o);
+        }
+    }
     public class GeneralMethods
     {
         //public static User? ReturnUserFromidentity()
@@ -41,6 +56,7 @@ namespace DeBank.Library.GeneralMethods
             foreach (T mitem in items)
                 yield return mitem;
         }
+
         public static void ShowGeneralErrorMessage()
         {
             //<summary>
