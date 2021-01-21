@@ -39,10 +39,6 @@ namespace DeBank.Library.Logic
 
         public async Task<User> AddUser(string Name)
         {
-            //var lockingobject = new object();
-            //Monitor.Enter(lockingobject);
-            //try
-            //{
             return await Task.Run(() =>
             {
                 User user = new User()
@@ -57,23 +53,11 @@ namespace DeBank.Library.Logic
 
                 return user;
             });
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-            //}
-            //finally
-            //{
-            //    Monitor.Exit(lockingobject);
-            //}
+
         }
 
         public async Task<BankAccount> AddBankAccount(User owner, string name, decimal money)
         {
-            //var lockingobject = new object();
-            //Monitor.Enter(lockingobject);
-            //try
-            //{
             return await Task.Run(() =>
             {
                 BankAccount account = new BankAccount()
@@ -89,15 +73,7 @@ namespace DeBank.Library.Logic
 
                 return account;
             });
-            //}
-            //catch (Exception ex)
-            //{
-            //    GeneralMethods.GeneralMethods.ShowGeneralErrorMessage();
-            //}
-            //finally
-            //{
-            //    Monitor.Exit(lockingobject);
-            //}
+
         }
 
         public async Task AutomatedRecurringPayments(decimal price, int amountoftimespayment) //required project assignment

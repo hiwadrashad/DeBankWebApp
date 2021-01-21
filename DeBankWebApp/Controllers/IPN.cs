@@ -94,11 +94,7 @@ namespace DeBankWebApp.Controllers
                 var item = TempData.Peek("carryoverkey") as Transaction;
                 BankLogic logic = new BankLogic();
                 await logic.SpendMoney(StaticResources.CurrentUser.CurrentBankAccount, item.Amount);
-                // check that Payment_status=Completed
-                // check that Txn_id has not been previously processed
-                // check that Receiver_email is your Primary PayPal email
-                // check that Payment_amount/Payment_currency are correct
-                // process payment
+ 
             }
             else if (ipnContext.Verification.Equals("INVALID"))
             {

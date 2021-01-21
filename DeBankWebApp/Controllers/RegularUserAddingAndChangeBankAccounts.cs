@@ -24,17 +24,11 @@ namespace DeBankWebApp.Controllers
             this._userManager = userManager;
             this._signInManager = signInManager;
         }
-        // GET: RegularUserAddingBankAccounts/Create
         [Authorize]
         public IActionResult GenerateBankAccount()
         {
             BankAccount account = new BankAccount();
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    DateOfCreation = DateTime.Now,
-                //IBAN = IBAN.IBAN.GenerateIBANNumber(),
-            //    Owner = StaticResources.CurrentUser.currentuser,
-            //};
+  
             return View(account);
         }
         [Authorize]
@@ -76,7 +70,6 @@ namespace DeBankWebApp.Controllers
             return View();
         }
 
-        // POST: RegularUserAddingBankAccounts/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult GenerateBankAccount(BankAccount account)
@@ -128,13 +121,11 @@ namespace DeBankWebApp.Controllers
 
         [Authorize]
 
-        // GET: RegularUserAddingBankAccounts/Edit/5
         public IActionResult ChangeBankAccountData(string id)
         {
             return View(_dataService.ReturnBankAccount(id));
         }
 
-        // POST: RegularUserAddingBankAccounts/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ChangeBankAccountData(BankAccount account)
@@ -171,14 +162,12 @@ namespace DeBankWebApp.Controllers
             }
         }
 
-        // GET: RegularUserAddingBankAccounts/Delete/5
         [Authorize]
         public IActionResult RemoveBankAccount(string id)
         {
             return View(_dataService.ReturnBankAccount(id));
         }
 
-        // POST: RegularUserAddingBankAccounts/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RemoveBankAccount(BankAccount account)

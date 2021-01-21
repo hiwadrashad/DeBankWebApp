@@ -21,18 +21,12 @@ namespace DeBankWebApp.Controllers
     {
         IDataService _dataService = DeBank.Library.DAL.MockingData.GetMockDataService();
 
-        // GET: RegularUserMoneyMutation
         [Authorize]
 
         public IActionResult TransferMoney(string id)
         {
             Transaction transaction = new Transaction();
             StaticResources.CurrentUser.CurrentBankAccount = _dataService.ReturnBankAccount(id);
-            //transaction = new Transaction()
-            //{
-            //    Id = Guid.NewGuid().ToString(),
-            //    Account = _dataService.ReturnBankAccount(id)
-            //};
             return View(transaction);
         }
 
@@ -42,7 +36,6 @@ namespace DeBankWebApp.Controllers
             return View();
         }
 
-        // GET: RegularUserMoneyMutation/Details/5
         [HttpPost]
         public async Task<IActionResult> TransferMoney(Transaction transaction)
         {
@@ -87,7 +80,6 @@ namespace DeBankWebApp.Controllers
         }
 
 
-        // GET: RegularUserMoneyMutation/Edit/5
         [Authorize]
 
         public IActionResult Pay(string id)
@@ -107,7 +99,6 @@ namespace DeBankWebApp.Controllers
             return View();
         }
 
-        // POST: RegularUserMoneyMutation/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Pay(Transaction transaction)

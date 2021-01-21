@@ -16,9 +16,6 @@ namespace DeBankWebApp.Data
             _options = options;
         }
 
-        //public ApplicationDbContext(DbContextOptions<ApplicationDbContext> option) : base(option)
-        //{
-        //}
 
         private static ApplicationDbContext _dbContext;
 

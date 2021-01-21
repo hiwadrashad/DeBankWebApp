@@ -42,12 +42,7 @@ namespace DeBank.Library.GeneralMethods
     }
     public class GeneralMethods
     {
-        //public static User? ReturnUserFromidentity()
-        //{ 
-        //    User.Identity
-        // //Microsoft.AspNetCore.Identity.UserManager<IdentityUser> _userManager;
-        //   bool val1 = Request
-        //}
+  
         public static IEnumerable<T> CreateEnumerable<T>(params T[] items)
         {
             if (items == null)
